@@ -1,0 +1,281 @@
+//extensions.BYTubeD.description=BYTubeD - Bulk YouTube video Downloader
+//# ----------------------------------------------------
+//# selectionManager related messages
+//# ----------------------------------------------------
+{
+  "NoLinksOnPage": {
+    "message": "No YouTube links were found on this page",
+    "description": ""
+  },
+  "NoLinksInClipboard": {
+    "message": "or in the system clipboard",
+    "description": ""
+  },
+  "NoLinksInTabs": {
+    "message": "or in any open tab of the current window",
+    "description": ""
+  },
+  "LinkCountOnPage": {
+    "message": "video links have been found on this page.",
+    "description": ""
+  },
+  "Loading": {
+    "message": "Loading...",
+    "description": ""
+  },
+  "SelectDestination": {
+    "message": "Please select a destination folder for your downloads.",
+    "description": ""
+  },
+  "SelectDestinationForSubtitles": {
+    "message": " Please select a destination folder for subtitles.",
+    "description": ""
+  },
+  "VideosSelected": {
+    "message": "videos selected for download.",
+    "description": ""
+  },
+  "InvalidDestinationDirectory": {
+    "message": "Invalid Destination Directory",
+    "description": ""
+  },
+  "InvalidDestinationDirectoryMessage": {
+    "message": "Please check the Destination field. %013 It must be a valid absolute path.  If you don't know \n what that means, please use the Browse button and select the destination directory.",
+    "description": ""
+  },
+  "InvalidSubtitleDestination": {
+    "message": "Invalid Destination Directory for Subtitles",
+    "description": ""
+  },
+  "InvalidSubtitleDestinationMessage": {
+    "message": "Please check the destination directory field for subtitles. It must be a valid absolute path. If you don't know what that means, please use the Browse button and select the destination directory.",
+    "description": ""
+  },
+  "NotGoodIdea": {
+    "message": "Not a good idea",
+    "description": ""
+  },
+  "NotGoodIdeaMessage": {
+    "message": "What to do? = Enqueue for Download is not a good setting if you want to download more than 5 videos at a time. This will slow down the browser. Generate Links is the recommended setting. \n\nPress OK to enqueue anyway and Cancel to go back and set What to do? = Generate Links.",
+    "description": ""
+  },
+  "Selection": {
+    "message": "Selection",
+    "description": ""
+  },
+  "NothingSelected": {
+    "message": "You haven't selected anything! Please select at least one video.",
+    "description": ""
+  },
+  //# ----------------------------------------------------
+  //# Video download related messages
+  //# ----------------------------------------------------
+  "GenericFailureMessage": {
+    "message": "This video is not available for download at this point of time.",
+    "description": ""
+  },
+  //# ----------------------------------------------------
+  //# queueingStatusManager related messages
+  //# ----------------------------------------------------
+  "ProcessingSelection": {
+    "message": "Processing selection...",
+    "description": ""
+  },
+  "RequestsSuccessful": {
+    "message": "requests have been processed successfully;",
+    "description": ""
+  },
+  "RequestsFailed": {
+    "message": "requests have failed.",
+    "description": ""
+  },
+  "AllRequestsProcessed": {
+    "message": "\n-------------- All the requests have been processed --------------\n\n",
+    "description": ""
+  },
+  "HtmlPageTitle": {
+    "message": "BYTubeD Generated Links",
+    "description": ""
+  },
+  "InvocationTime": {
+    "message": "BYTubeD Invocation Timestamp:",
+    "description": ""
+  },
+  "SourcePage": {
+    "message": "Source page:",
+    "description": ""
+  },
+  "LinkGenerationFailedFor": {
+    "message": "Failed to generate download links for the following videos.",
+    "description": ""
+  },
+  "LinkGenerationSucessfulFor": {
+    "message": "YouTube page links of the successful requests:",
+    "description": ""
+  },
+  "SNo": {
+    "message": "S.No",
+    "description": ""
+  },
+  "Title": {
+    "message": "Title",
+    "description": ""
+  },
+  "Quality": {
+    "message": "Quality",
+    "description": ""
+  },
+  "Subtitles": {
+    "message": "Subtitles",
+    "description": ""
+  },
+  "None": {
+    "message": "None",
+    "description": ""
+  },
+  "For": {
+    "message": "for",
+    "description": ""
+  },
+  "ReasonForFailure": {
+    "message": "Reason for failure",
+    "description": ""
+  },
+  "NotEnoughTime": {
+    "message": "Didn't get enough time to process the request!",
+    "description": ""
+  },
+  "HasGeneratedLinks": {
+    "message": "BYTubeD has generated $1$ downloadable video links.",
+    "description": "",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "Count"
+      }
+    }
+  },
+  "InvokeDTA": {
+    "message": "Invoke a download manager, such as $1$,  on this page to download these videos.",
+    "description": "",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "Name"
+      }
+    }
+  },
+  "IfNoDM": {
+    "message": "If you do not have a download manger, you can click on the links below and download the videos one by one.<br/> \n\t\t\t\t But batch download becomes far easier if you have a download manager like DownThemAll.",
+    "description": ""
+  },
+  "NoDownloadLinksGenerated": {
+    "message": "BYTubeD has not generated any download links.",
+    "description": ""
+  },
+  "LinkGenerationTime": {
+    "message": "Link Generation Time:",
+    "description": ""
+  },
+  "LinkExpiryTime": {
+    "message": "Link Expiry Time:",
+    "description": ""
+  },
+  "WatchLinksFile": {
+    "message": "See $1$ for YouTube page links.",
+    "description": "",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "Filename"
+      }
+    }
+  },
+  //# ----------------------------------------------------
+  //# downloadQueueManger related messages
+  //# ----------------------------------------------------
+  "dqMgr_InvalidDestinationDirectoryMessage": {
+    "message": "Please check the Destination field. It must be a valid absolute path.\n\n For now proceeding with the default Downloads directory...\n($1$)",
+    "description": "",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "DirectoryName"
+      }
+    }
+  },
+  "DirectoryCreationFailed": {
+    "message": "Directory creation failed!",
+    "description": ""
+  },
+  "NoWritePermission": {
+    "message": "Probably you don't have write permissions on the destination directory.",
+    "description": ""
+  },
+  "RequestSuccessfullyProcessed": {
+    "message": "Request for \"$1$\" has been successfully processed.",
+    "description": "",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "Requestname"
+      }
+    }
+  },
+  "ButNoSubtitlesDueToInternalError": {
+    "message": "But subtitles were not downloaded due to an internal error [$1$].",
+    "description": "",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "Errorname"
+      }
+    }
+  },
+  "ButNoSubtitlesAvailable": {
+    "message": "But subtitles are not available for this video in any language you have chosen.",
+    "description": ""
+  },
+  "SubtitlesDownloadedIn": {
+    "message": "Subtitles were downloaded in $1$.",
+    "description": "",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "Language"
+      }
+    }
+  },
+  "SubtitlesDownloadedInDifferentDialect": {
+    "message": "Subtitles were asked in $1$, but downloaded in $2$ due to their unavailability in $1$.",
+    "description": "",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "LanguagePreferred"
+      },
+      "2": {
+        "content": "$2",
+        "example": "LanguageAlternative"
+      }
+    }
+  },
+  "FileCreationFailed": {
+    "message": "File creation failed!",
+    "description": ""
+  },
+  //# ----------------------------------------------------
+  //# global messages
+  //# ----------------------------------------------------
+  "ReportRequestMessage": {
+    "message": "There was some problem while I was doing my job.\n Please consider reporting this problem to my boss.\n\n If you say \"OK\", then a mail window will be opened,\n if you already have a mail client configured.",
+    "description": ""
+  },
+  //# ----------------------------------------------------
+  //# videoListManager related messages
+  //# ----------------------------------------------------
+  "Unknown": {
+    "message": "Unknown",
+    "description": ""
+  }
+}
