@@ -12,12 +12,12 @@ downloading multiple YouTube videos at once in batch mode with a few clicks). It
 used to download all/selected YouTube videos on any page which has some YouTube video links.
 It makes the job of downloading YouTube playlists easy.
 
-###  How to install BYTubeD?
+###  How to install BYTubeD Express?
 
 To install BYTubeD Express, please use the crx from this Page [Releases](https://github.com/dieterds/bytubed_chrome/releases)
 and install to chrome".
 
-###  How to invoke BYTubeD?
+###  How to invoke BYTubeD Express?
 
 Once BYTubeD is installed, it can be invoked by clicking on the BYTubeD Express icon in the
 symbol menu. To know more about how to use BYTubeD Express, please see the old
