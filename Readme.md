@@ -15,7 +15,7 @@ It makes the job of downloading YouTube playlists easy.
 ###  How to install BYTubeD?
 
 To install BYTubeD Express, please use the crx from this Page [Releases](https://github.com/dieterds/bytubed_chrome/releases)
-and click on "Add to Firefox".
+and install to chrome".
 
 ###  How to invoke BYTubeD?
 
