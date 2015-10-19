@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<head>
+	<meta charset="utf-8">
+	<!--<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+	<link href="main.css" rel="stylesheet" type="text/css">
+	<!--<link href="win.css" rel="stylesheet" type="text/css">-->
+	<script src="js/jquery-1.11.2.min.js"></script>
+	<!--<script src="js/bootstrap.min.js"></script>-->
+	<script src="options.js"></script>
+	<script src="js/localize.js"></script>	
+	<div id="savearea" hidden>
+		<div id="status"></div>
+		<button id="load">Load</button>
+		<button id="save">Save</button>
+	</div>
+
+	<fieldset name="Misc" style="width:550px;">
+		<legend>Miscellaneous</legend>
+		<label>Places to scan for YouTube links:</label>
+		<br>
+		<input id="scanAllTabs" type="checkbox">
+		<label id="Label8">All tabs of the current window</label>
+		<br>
+		<div hidden>
+			<input id="scanCurTabFirst" type="checkbox">
+			<label>Scan the current tab first</label>
+			<br>
+		</div>
+		<div hidden>
+			<input id="scanClipboard" type="checkbox">
+			<label id="Label10">System clipboard</label>
+			<br>
+		</div>
+		<label id="Label11">(Effective from the next invocation of BYTubeD)</label>
+		<br>
+		<hr>
+		<input id="ignoreFileType" type="checkbox">
+		<label>Video format does not matter. Try to get the videos in requested quality.</label>
+		<br>
+		<input id="preserveOrder" type="checkbox">
+		<label id="Label13">Preserve order (prepends the file name with the serial number).</label>
+		<br>
+		<input id="prefetch" type="checkbox">
+		<label id="Label14">Silently prefetch downloadable video URLs (makes the next step faster).</label>
+		<br>
+		<div hidden>
+			<label id="Label15">Show</label>
+			<input id="showResolution" type="checkbox">
+			<label id="Label16">Max Resolution</label>
+			<input id="showQuality" type="checkbox">
+			<label id="Label17">Max Quality</label>
+			<input id="showClipLength" type="checkbox">
+			<label id="Label18">Clip length</label>
+			<br>
+		</div>
+	</fieldset>
+	<fieldset name="grpSubtitles" hidden>
+		<legend>Subtitles</legend>
+		<input id="fetchSubtitles" type="checkbox">
+		<label>Fetch subtitles in</label>
+		<select id="subtitleLangList" style="width: 500px">
+			<option></option>
+		</select>
+		<label>whenever available.</label>
+		<br>
+		<input id="tryOtherLanguages" type="checkbox">
+		<label id="Label5">If subtitles are not available in the primary language, try the following languages in the given order.</label>
+		<br>
+		<select class="secondaryLanguage" id="firstSubtitleLang" style="width: 200px">
+			<option></option>
+		</select>
+		&gt;
+		<select class="secondaryLanguage" id="secondSubtitleLang" style="width: 200px">
+			<option></option>
+		</select>
+		&gt;
+		<select class="secondaryLanguage" id="thirdSubtitleLang" style="width: 200px">
+			<option></option>
+		</select>
+		<br>
+		<input id="tryOtherDialects" type="checkbox">
+		<label>If subtitles are not available in the requested dialect, try other dialects of the same language.</label>
+		<br>
+		<label>Destination directory for subtitles</label>
+		<input id="subtitleDest" style="width: 438px" type="text">
+		<!--<button class=".btn-default" id="browseSubtitles" >
+			<img  src="gfx/Browse-16.png">Browse</button>-->
+	</fieldset>
+
+	<fieldset name="grpUserInteraction">
+		<legend>User Interaction</legend>
+		<input id="closeQStatusWindow" type="checkbox">
+		<label>Close the queueing status window after processing all the requests unless there are some errors.</label>
+		<br>
+		<input id="suppressErrors" name="Checkbox2" type="checkbox" disabled>
+		<label>Suppress error messages. I don't want to see frequent error report requests.</label>
+		<br>
+		<input id="suppressWarnings" name="Checkbox3" type="checkbox" disabled>
+		<label>Suppress warning messages. I don't want to see frequent warning messages.</label>
+		<br>
+	</fieldset>
+	<fieldset name="grpGenerateLinks" hidden>
+		<legend>Generate Links</legend>
+		<label>When 'What to do?' = 'Generate Links' ...
+			<br>
+			<br>
+			<label>Generate an HTML file containing YouTube watch links for ...</label>
+			<br>
+			<input id="generateFailedLinks" type="checkbox">
+			<label>Failed requests</label>
+			<input id="generateWatchLinks" type="checkbox">
+			<label>Successful requests</label>
+			<br>
+			<hr>
+			<label>Generate text files containing YouTube watch links for ...
+				<br>
+				<input id="generateBadLinks" type="checkbox">
+				<label>Failed requests</label>
+				<input id="generateGoodLinks" type="checkbox">
+				<label>Successful requests</label>
+			</label>
+		</label>
+
+	</fieldset>
+	<fieldset name="grpWindowManagement" hidden>
+		<legend>Window Management</legend>
+		<input id="resizeWindow" type="checkbox">
+		<label>Try to resize the window to fit content.</label>
+		<br>
+		<input id="centerWindow" type="checkbox">
+		<label>Try to center the window after resizing.</label>
+		<br>
+		<input id="maintainAspectRatio" type="checkbox">
+		<label>Maintain aspect ratio while resizing the window.</label>
+	</fieldset>
+
+	</body>
+	<!--<footer>
+<h1 data-l10n-id="hello_id"></h1>
+<p>hase</p>
+</footer>
+-->
+
+</html>

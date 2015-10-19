@@ -56,3 +56,15 @@ tr:not(:first-child):hover {
 /*tr:active {
     background-color: red;
 }*/
+
+.VerticalCenter {
+    vertical-align: middle;
+}
+		
+#savearea {
+    text-align: center;
+}
+
+/*body {
+    padding: 10px;
+}*/

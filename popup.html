@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="initial-scale=1">
+
+<head>
+	<meta charset="utf-8">
+	<title>BYTubeD - Select the videos to be downloaded</title>
+	<!--<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+	<link href="css/main.css" rel="stylesheet" type="text/css">
+	<!--<link href="win.css" rel="stylesheet" type="text/css">-->
+	<script src="js/jquery-1.11.2.min.js"></script>
+	<!--<script src="js/bootstrap.min.js"></script>-->
+
+	<script src="queueingstatusmanager.js"></script>
+	<!--<script src="globals.js"></script>
+	<script src="utf.js"></script>
+	<script src="langList.js"></script>
+	<script src="subtitles.js"></script>
+	<script src="xmlHttpRequestManager.js"></script>
+	<script src="videoListManager.js"></script>
+	<script src="downloadQueueManager.js"></script>
+	<script src="selectionManager.js"></script>-->
+	<!--<script src="xmlHttpRequestManager.js"></script>-->
+	<script src="popup.js"></script>
+	<script src="js/localize.js"></script>
+</head>
+
+<body>
+	<div hidden>
+		<button id="testbutton">TestGetDocument</button>
+		<button id="loadsettings">Load</button>
+	</div>
+	<nav id='navi'><span id='FilesTabButton'>GetDownloads</span> | <span id='StatusTabButton'>Status</span></nav>
+	<fieldset id="FilesTab" class="VerticalCenter">
+		<table id="links">
+			<thead>
+
+				<th>S.No</th>
+				<th>Title</th>
+				<th>Max Resolution</th>
+				<th>Max Quality</th>
+				<th>Clip Length</th>
+
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+	</fieldset>
+	<fieldset id="FilesControlTab" class="VerticalCenter">
+		<!--<p>-->
+		<label>Video Format</label>
+		<select id="formatPreferenceNew">
+			<option value="FLV">FLV</option>
+			<option selected="" value="MP4">MP4</option>
+			<option value="WebM">WebM</option>
+			<option value="3GP">3GP</option>
+		</select> |
+		<label>Quality</label>
+		<select id="qualityNew">
+			<option value="p144">144p</option>
+			<option value="p240">240p</option>
+			<option value="p360">360p</option>
+			<option value="p480">480p</option>
+			<option selected="" value="p720">720p HD</option>
+			<option value="p1080">1080p HD</option>
+			<option value="original">Original</option>
+		</select> |
+		<label>What to do?</label>
+		<select id="todo">
+			<option selected value="genLinks">Generate Links</option>
+			<option value="nqLinks">Enqueue for Download</option>
+		</select>
+		<br>
+		<!--<p>-->
+		<div hidden>
+			<label>Destination</label>
+			<input id="destination" type="text" placeholder="D:\Downloads\">
+			<button class="" type="file" id="browseButton">
+				<img src="gfx/Browse-16.png">Save</button>
+			<!--<input id="selectfile" type="file" webkitdirectory multiple directory>-->
+		</div>
+		<!--</p>-->
+		<p>
+			<!--<br>-->
+			<label>Selection Filter</label>
+			<input id="filter" type="text" placeholder="*.*">
+			<input id="selectAll" type="checkbox" checked value="selectAll">
+			<label>Select All
+			</label>
+			<br>
+			<!--<p>-->
+		</p>
+		<!--<p>-->
+		<button id="start">
+			<img src="gfx/Start-16.png">Start</button>
+		<button id="help" accesskey="h">
+			<img src="gfx/Help-16.png">Help</button>
+		<button id="cancel" accesskey="c">
+			<img src="gfx/Cancel-16.png">Cancel</button>
+		<button id="options" accesskey="o">
+			<img src="gfx/Help-16.png">Options</button>
+		<!--</p>-->
+	</fieldset>
+
+
+	<fieldset id="StatusTab" class="VerticalCenter" hidden>
+		SuccessConsole
+		<br>
+		<textarea id="successConsole" readonly disabled cols="95" rows="15"></textarea>
+		<br> ErrorConsole
+		<br>
+		<textarea id="errorConsole" readonly disabled cols="95" rows="15"></textarea>
+		<br>
+		<label>Status:</label>
+		<div id="status2" style="display: inline;"></div>
+		<span id="progressvalue">0 %</span>
+		<progress id="progressmeter" value="0" max="100" />
+
+	</fieldset>
+
+	<label id="status">0/0 videos selected for download</label>
+</body>
+<!--<footer>	
+<h1 data-message="SelectDestinationForSubtitles">afffffffffff</h1>
+</footer>-->
+
+</html>
