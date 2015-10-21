@@ -10,7 +10,8 @@
 
 var LastClicked = null;
 var ContextMenuID = "";
-var prefs = GetAllSettings2(true); // OnStart = true
+var prefs = null;
+GetAllSettings2(true); // OnStart = true
 // chrome.storage.clear();
 // chrome.storage.sync.clear();
 
@@ -78,7 +79,9 @@ $(document).ready(function () {
     //         GetSetting('destination'));
     // });
 
-    // $('#testbutton').click(function (event) { OnBeginRequestMulti(event); });
+    $('#testbutton').click(function (event) { OnBeginRequestMulti(event); });
+    // $('#testbutton').click(function (event) { OnBeginGetDocumentOne(event); });
+    $('#loadsettings').click(function (event) { GetAllSettings2(); });
     // $('#FilesTabButton').click(function (event) { OnTabClicked(event); });
     // $('#StatusTabButton').click(function (event) { OnTabClicked(event); });
     $('#filter').keyup(function (event) { onFilterChange(event); });

@@ -60,9 +60,9 @@
     "activeTab",
     "downloads",
     "storage",
-    "http://*.youtube.com/*",
-    "https://*.youtube.com/*",
-    // "<all_urls>",
+    // "http://*.youtube.com/*",
+    // "https://*.youtube.com/*",
+     "<all_urls>",
     // "*://*/*",
     // "*://llonihmniahpaajmemgolkkfeccfgcjg/*",
      "contextMenus"
