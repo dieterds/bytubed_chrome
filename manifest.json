@@ -1,9 +1,9 @@
 {
   "name": "BYTubeD Express",
   "version": "1.00",
-  "version_name": "beta6",
+  "version_name": "beta7",
   "homepage_url": "https://github.com/dieterds/bytubed_chrome",
-  "short_name": "BYTubeDExp",    
+  "short_name": "BYTubeDExp",
   "description": "Gets all Youtube Links and generates downloadable Video Links in different resolutions.",
   "browser_action": {
     "default_icon": "gfx/icon.png",
@@ -20,7 +20,7 @@
     "16": "gfx/Down-16.png",
     "24": "gfx/Down-24.png",
     "32": "gfx/Down-32.png",
-    "48": "gfx/Down-48.png",    
+    "48": "gfx/Down-48.png",
     "64": "gfx/icon.png",
     "128": "gfx/Down-128.png"
   },
@@ -62,10 +62,12 @@
     "storage",
     // "http://*.youtube.com/*",
     // "https://*.youtube.com/*",
-     "<all_urls>",
-    // "*://*/*",
+    //  "<all_urls>",
+    "*://*/*",
     // "*://llonihmniahpaajmemgolkkfeccfgcjg/*",
-     "contextMenus"
+    "contextMenus",
+    "clipboardRead",
+    "clipboardWrite"
   ],
   "manifest_version": 2
 }
