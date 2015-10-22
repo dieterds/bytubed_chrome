@@ -7,7 +7,6 @@
 // - erste seite quellcode geben lassen und nicht per request
 // - mit content script alle daten per message an background script schicken und zwischenspeichern.
 // - language
-// wenn kein benutzender tab offen, aber clipboard, dann trotzdem machen. da muss ich wohl die handling prodezure in ne eigene prozedur packen
 
 var LastClicked = null;
 var ContextMenuID = "";
@@ -662,7 +661,7 @@ function TakeLinks(links, currentDocument) {
     // If no YouTube links were found on 'this' page, alert the user
     // "No YouTube links were found on this page."
     if (links.length == 0) {
-        var message = "NoLinksOnPage";
+        var message = strings.getString("NoLinksOnPage");
         message += ".";
         alert(message);
     }
