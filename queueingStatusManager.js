@@ -174,7 +174,7 @@ var queueingStatusManager = {
         var progressvalue = document.getElementById("progressvalue");
         // progress.mode = "determined";
         progress.value = 100 * ((qsMgr.successCount + qsMgr.failureCount) / selCount);
-        progressvalue.innerText = (100 * ((qsMgr.successCount + qsMgr.failureCount) / selCount)).toString() + "%";
+        progressvalue.innerText = (Math.round(100 * ((qsMgr.successCount + qsMgr.failureCount) / selCount))).toString() + "%";
 
         qsMgr.setStatus(qsMgr.successCount +
             "/" + selCount + " " + strings.getString("RequestsSuccessful") + " " +
@@ -215,9 +215,9 @@ var TextBoxElement = document.getElementById("successConsole");
         //                qsMgr.successCount > 0 && qsMgr.preferences.showDLWindow)
         //                iccb.services.downloadManagerUI.show();
 
-        // if (qsMgr.preferences.closeQStatusWindow && qsMgr.failureCount == 0) {
-        //     window.close();
-        // }
+        if (qsMgr.preferences.closeQStatusWindow && qsMgr.failureCount == 0) {
+            window.close();
+        }
 
     },
 
