@@ -7,6 +7,7 @@
 // - erste seite quellcode geben lassen und nicht per request
 // - mit content script alle daten per message an background script schicken und zwischenspeichern.
 // - language
+// wenn kein benutzender tab offen, aber clipboard, dann trotzdem machen. da muss ich wohl die handling prodezure in ne eigene prozedur packen
 
 var LastClicked = null;
 var ContextMenuID = "";
@@ -21,6 +22,22 @@ GetAllSettings2(true); // OnStart = true
 //       //console.log(views[i].windowId);
 //  };
 
+
+function setClipboard(str) {
+    var sandbox = $('#sandbox').val(str).select();
+    document.execCommand('copy');
+    sandbox.val('');
+}
+
+function getClipboard() {
+    var result = '',
+        sandbox = $('#sandbox').val('').select();
+    if (document.execCommand('paste')) {
+        result = sandbox.val();
+    }
+    sandbox.val('');
+    return result;
+}
 
 function GetAllSettings2(OnStart) {
     chrome.storage.sync.get(null, function (items) {
@@ -82,6 +99,9 @@ $(document).ready(function () {
     $('#testbutton').click(function (event) { OnBeginRequestMulti(event); });
     // $('#testbutton').click(function (event) { OnBeginGetDocumentOne(event); });
     $('#loadsettings').click(function (event) { GetAllSettings2(); });
+    $('#getcb').click(function (event) { getClipboard();});
+    $('#setcb').click(function (event) { setClipboard($("#sandbox").val());});
+    
     // $('#FilesTabButton').click(function (event) { OnTabClicked(event); });
     // $('#StatusTabButton').click(function (event) { OnTabClicked(event); });
     $('#filter').keyup(function (event) { onFilterChange(event); });
@@ -97,7 +117,7 @@ $(document).ready(function () {
         if (areaName == 'sync') {
             console.log('Settings changed');
             prefs = GetAllSettings2();
-        };
+        };                
     });
     
       // $('button').toggleClass('VerticalCenter', true);
@@ -310,34 +330,10 @@ function keyPressed(event) {
 
 function onBrowse(event) {
 
-    //             var Cc = Components.classes;
-    //             var Ci = Components.interfaces;
-    //             var fp = Cc["@mozilla.org/filepicker;1"]
-    //                 .createInstance(Ci.nsIFilePicker);
-    // 
-    //             fp.init(window, strings.getString("SelectDestination"), 2);
-    //             var result = fp.show();
-    // 
-    //             if (result == Ci.nsIFilePicker.returnOK) {
-    //                 destination = document.getElementById("destination");
-    //                 destination.value = fp.file.path;
-    //             } 
 }
 
 function onBrowseSubtitles(event) {
-
-    //             var Cc = Components.classes;
-    //             var Ci = Components.interfaces;
-    //             var fp = Cc["@mozilla.org/filepicker;1"]
-    //                 .createInstance(Ci.nsIFilePicker);
-    // 
-    //             fp.init(window, strings.getString("SelectDestinationForSubtitles"), 2);
-    //             var result = fp.show();
-    // 
-    //             if (result == Ci.nsIFilePicker.returnOK) {
-    //                 destination = document.getElementById("subtitleDest");
-    //                 destination.value = fp.file.path;
-    //             }    
+ 
 }
 
 function onStart(event) {
@@ -345,36 +341,7 @@ function onStart(event) {
     var destination = document.getElementById("destination");
     destinationDirectory = destination.value
         .replace(/^\s*/, "")
-        .replace(/\s*$/, "");
-
-    //             var Cc = Components.classes;
-    //             var Ci = Components.interfaces;
-    //             var file = Cc["@mozilla.org/file/local;1"]
-    //                 .createInstance(Ci.nsILocalFile);
-    // 
-    //             try {
-    //                 file.initWithPath(destinationDirectory);
-    //             }
-    //             catch (error) {
-    //                 destinationDirectory = services.downloadManager
-    //                 .userDownloadsDirectory.path;
-    // 
-    //                 services.promptService.alert(window,
-    //                     strings.getString("InvalidDestinationDirectory"),
-    //                     strings.getString("InvalidDestinationDirectoryMessage"));
-    // 
-    //                 return;
-    //             }
-
-    // try {
-    //     file.initWithPath(document.getElementById("subtitleDest").value);
-    // }
-    // catch (error) {
-    //     services.promptService.alert(window,
-    //         strings.getString("InvalidSubtitleDestination"),
-    //         strings.getString("InvalidSubtitleDestinationMessage"));
-    //     return;
-    // }
+        .replace(/\s*$/, "");   
 
     var selCount = 0;
     var i = 0;
@@ -398,32 +365,32 @@ function onStart(event) {
 
     var i3 = document.getElementById("todo").selectedIndex;
     preferences.todo = i3;
-    Preferences.showDLWindow = prefs["showDLWindow"];
-    Preferences.closeQStatusWindow = prefs["closeQStatusWindow"];
-    Preferences.preserveOrder = prefs["preserveOrder"];
-    Preferences.generateFailedLinks = prefs["generateFailedLinks"];
-    Preferences.generateWatchLinks = prefs["generateWatchLinks"];
-    Preferences.generateBadLinks = prefs["generateBadLinks"];
-    Preferences.generateGoodLinks = prefs["generateGoodLinks"];
-    Preferences.ignoreFileType = prefs["ignoreFileType"];
-    Preferences.fetchSubtitles = prefs["fetchSubtitles"];
-    Preferences.tryOtherLanguages = prefs["tryOtherLanguages"]; // this is not needed.
+    preferences.showDLWindow = prefs["showDLWindow"];
+    preferences.closeQStatusWindow = prefs["closeQStatusWindow"];
+    preferences.preserveOrder = prefs["preserveOrder"];
+    preferences.generateFailedLinks = prefs["generateFailedLinks"];
+    preferences.generateWatchLinks = prefs["generateWatchLinks"];
+    preferences.generateBadLinks = prefs["generateBadLinks"];
+    preferences.generateGoodLinks = prefs["generateGoodLinks"];
+    preferences.ignoreFileType = prefs["ignoreFileType"];
+    preferences.fetchSubtitles = prefs["fetchSubtitles"];
+    preferences.tryOtherLanguages = prefs["tryOtherLanguages"]; // this is not needed.
             
-//     Preferences.tryOtherDialects = prefs["tryOtherDialects"];
-//     Preferences.destinationDirectory = destinationDirectory; // Used in processing subtitles
-//     Preferences.subtitleDest = document.getElementById("subtitleDest").value;
+//     preferences.tryOtherDialects = prefs["tryOtherDialects"];
+//     preferences.destinationDirectory = destinationDirectory; // Used in processing subtitles
+//     preferences.subtitleDest = document.getElementById("subtitleDest").value;
 // 
-//     if (Preferences.fetchSubtitles) {
+//     if (preferences.fetchSubtitles) {
 //         var subtitleLangList = document.getElementById("subtitleLangList");
 // 
 //         if (subtitleLangList && subtitleLangList.selectedItem && subtitleLangList.selectedItem.value)
-//             Preferences.subtitleLangCodes[0] = subtitleLangList.selectedItem.value;
+//             preferences.subtitleLangCodes[0] = subtitleLangList.selectedItem.value;
 // 
 //         var secondaryLanguages = document.getElementsByClassName("secondaryLanguage");
 // 
 //         for (var i = 0; i < secondaryLanguages.length; i++)
 //             if (secondaryLanguages[i].selectedItem && secondaryLanguages[i].selectedItem.value)
-//                 Preferences.subtitleLangCodes[i + 1] = Preferences.fetchSubtitles ? secondaryLanguages[i].selectedItem.value : "";
+//                 preferences.subtitleLangCodes[i + 1] = preferences.fetchSubtitles ? secondaryLanguages[i].selectedItem.value : "";
 //     }
 
     // Preferences section ends
@@ -452,7 +419,7 @@ function onStart(event) {
             //     "chrome,all,menubar=no,width=680,height=480,left=80,top=80",
             //     selectedVideoList,
             //     destinationDirectory,
-            //     Preferences,
+            //     preferences,
             //     invocationInfo,
             //     subtitleLanguageInfo
             //     );
@@ -625,7 +592,8 @@ var suppressWarnings = false;
 // Mit Ajax Request Start //
 ////////////////////////////
 function OnBeginRequestMulti() {
-    var scanAllTabs = prefs["scanAllTabs"]?prefs["scanAllTabs"]:false;
+    var scanAllTabs = prefs["scanAllTabs"] ? prefs["scanAllTabs"] : false;
+    var scanCB = prefs["scanClipboard"] ? prefs["scanClipboard"] : false;
     var LocalTabURLs = [];
     
     
@@ -659,56 +627,77 @@ function OnBeginRequestMulti() {
                         LocalTabURLs.unshift(tab.url);
                     }
             }
-        
-                AjaxRequestsMulti(LocalTabURLs,
-                    function (data) {
-                        //console.log('callback');                                    
+
+            AjaxRequestsMulti(LocalTabURLs,
+                function (data) {
+                    //console.log('callback');                                    
 
                       
-                        //starten, alle elemente da.
-                        // console.log('Sind fertig, könnten starten!');
-                        var currentDocument;
-                        var links = [];
+                    //starten, alle elemente da.
+                    // console.log('Sind fertig, könnten starten!');
+                    var currentDocument;
+                    var links = [];
 
-                        for (var key in data) {
-                            if (data.hasOwnProperty(key)) {
-                                currentDocument = data[key];
-                                buildLinks(currentDocument, links);
-                            }
-                        }                                         
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            currentDocument = data[key];
+                            buildLinks(currentDocument, links);
+                        }
+                    }
+
+                    if (scanCB) {
+                        getLinksFromClipboard(links);
+                    }                                       
         
-                        // If no YouTube links were found on 'this' page, alert the user
-                        // "No YouTube links were found on this page."
-                        if (links.length == 0) {
+                    // If no YouTube links were found on 'this' page, alert the user
+                    // "No YouTube links were found on this page."
+                    if (links.length == 0) {
 
-                            var message = "NoLinksOnPage";
-                            message += ".";
+                        var message = "NoLinksOnPage";
+                        message += ".";
 
-                            alert(message);
-                        }
-                        else {
-                            invocationInfo = new InvocationInfo();
-                            invocationInfo.timeStamp = new Date().toString();
-                            invocationInfo.sourcePageUrl = currentDocument.URL;
-                            invocationInfo.sourcePageTitle = currentDocument.URL;
-                            if (currentDocument.title && currentDocument.title.length > 0)
-                                invocationInfo.sourcePageTitle = currentDocument.title;
+                        alert(message);
+                    }
+                    else {
+                        invocationInfo = new InvocationInfo();
+                        invocationInfo.timeStamp = new Date().toString();
+                        invocationInfo.sourcePageUrl = currentDocument.URL;
+                        invocationInfo.sourcePageTitle = currentDocument.URL;
+                        if (currentDocument.title && currentDocument.title.length > 0)
+                            invocationInfo.sourcePageTitle = currentDocument.title;
                 
-                            // populate the videoList before applying default fliters
-                            buildVideoList(links); // works by side-effect
-                            setStatus(videoList.length +
-                                " " + strings.getString("LinkCountOnPage"));
+                        // populate the videoList before applying default fliters
+                        buildVideoList(links); // works by side-effect
+                        setStatus(videoList.length +
+                            " " + strings.getString("LinkCountOnPage"));
 
-                            loadFlags();
-                        }
+                        loadFlags();
+                    }
 
-                    },
-                    function (data) {
-                        console.log('failedcallback');
-                    });
-                    
+                },
+                function (data) {
+                    console.log('failedcallback');
+                });
+
         });
 }
+
+
+function getLinksFromClipboard(links) {
+
+    var clipboardText = getClipboard();
+    var vids = getVidsFromText(clipboardText);
+    var processedVids = getVidsFromLinks(links);
+    var majorityLength = 11; // getMajorityLength(links); // getMajorityLength is slow
+    for (var i = 0; i < vids.length; i++) {
+        // Truncate the vids to the length of the most of
+        // the VIDs so far.
+        vids[i] = vids[i].substring(0, majorityLength);
+    }
+
+    buildLinksForVids(vids, links, processedVids);
+};
+
 ///////////////////////////
 // Mit Ajax Request Ende //
 ///////////////////////////
