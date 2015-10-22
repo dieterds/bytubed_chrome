@@ -594,8 +594,7 @@ var suppressWarnings = false;
 function OnBeginRequestMulti() {
     var scanAllTabs = prefs["scanAllTabs"] ? prefs["scanAllTabs"] : false;
     var scanCB = prefs["scanClipboard"] ? prefs["scanClipboard"] : false;
-    var LocalTabURLs = [];
-    
+    var LocalTabURLs = [];    
     
     // Tabs
     chrome.tabs.query({ currentWindow: true },
@@ -628,58 +627,64 @@ function OnBeginRequestMulti() {
                     }
             }
 
-            AjaxRequestsMulti(LocalTabURLs,
-                function (data) {
-                    //console.log('callback');                                    
+            var links = [];
+            if (scanCB) {
+                getLinksFromClipboard(links);
+            }
 
+            // Wenn keine Tabs zum checken da sind, eventuelle Clipboard-Links nehmen
+            if (LocalTabURLs.length == 0) {
+                TakeLinks(links,null);
+            }
+            else
+                AjaxRequestsMulti(LocalTabURLs,
+                    function (data) {
+                        //console.log('callback');                                    
                       
-                    //starten, alle elemente da.
-                    // console.log('Sind fertig, könnten starten!');
-                    var currentDocument;
-                    var links = [];
-
-                    for (var key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            currentDocument = data[key];
-                            buildLinks(currentDocument, links);
+                        //starten, alle elemente da.
+                        // console.log('Sind fertig, könnten starten!');
+                        var currentDocument;
+                        for (var key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                currentDocument = data[key];
+                                buildLinks(currentDocument, links);
+                            }
                         }
-                    }
-
-                    if (scanCB) {
-                        getLinksFromClipboard(links);
-                    }                                       
-        
-                    // If no YouTube links were found on 'this' page, alert the user
-                    // "No YouTube links were found on this page."
-                    if (links.length == 0) {
-
-                        var message = "NoLinksOnPage";
-                        message += ".";
-
-                        alert(message);
-                    }
-                    else {
-                        invocationInfo = new InvocationInfo();
-                        invocationInfo.timeStamp = new Date().toString();
-                        invocationInfo.sourcePageUrl = currentDocument.URL;
-                        invocationInfo.sourcePageTitle = currentDocument.URL;
-                        if (currentDocument.title && currentDocument.title.length > 0)
-                            invocationInfo.sourcePageTitle = currentDocument.title;
-                
-                        // populate the videoList before applying default fliters
-                        buildVideoList(links); // works by side-effect
-                        setStatus(videoList.length +
-                            " " + strings.getString("LinkCountOnPage"));
-
-                        loadFlags();
-                    }
-
-                },
-                function (data) {
-                    console.log('failedcallback');
-                });
-
+                        TakeLinks(links,currentDocument);
+                    },
+                    function (data) {
+                        console.log('failedcallback');
+                    });
         });
+}
+
+function TakeLinks(links, currentDocument) {
+    // If no YouTube links were found on 'this' page, alert the user
+    // "No YouTube links were found on this page."
+    if (links.length == 0) {
+        var message = "NoLinksOnPage";
+        message += ".";
+        alert(message);
+    }
+    else {
+        if (currentDocument == null) {
+            currentDocument = { URL: links[0].href, title: "" };
+        }
+
+        invocationInfo = new InvocationInfo();
+        invocationInfo.timeStamp = new Date().toString();
+        invocationInfo.sourcePageUrl = currentDocument.URL;
+        invocationInfo.sourcePageTitle = currentDocument.URL;
+        if (currentDocument.title && currentDocument.title.length > 0)
+            invocationInfo.sourcePageTitle = currentDocument.title;
+                
+        // populate the videoList before applying default fliters
+        buildVideoList(links); // works by side-effect
+        setStatus(videoList.length +
+            " " + strings.getString("LinkCountOnPage"));
+
+        loadFlags();
+    }
 }
 
 
