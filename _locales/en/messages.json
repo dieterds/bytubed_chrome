@@ -1,7 +1,3 @@
-//extensions.BYTubeD.description=BYTubeD - Bulk YouTube video Downloader
-//# ----------------------------------------------------
-//# selectionManager related messages
-//# ----------------------------------------------------
 {
   "NoLinksOnPage": {
     "message": "No YouTube links were found on this page",
@@ -67,16 +63,10 @@
     "message": "You haven't selected anything! Please select at least one video.",
     "description": ""
   },
-  //# ----------------------------------------------------
-  //# Video download related messages
-  //# ----------------------------------------------------
   "GenericFailureMessage": {
     "message": "This video is not available for download at this point of time.",
     "description": ""
   },
-  //# ----------------------------------------------------
-  //# queueingStatusManager related messages
-  //# ----------------------------------------------------
   "ProcessingSelection": {
     "message": "Processing selection...",
     "description": ""
@@ -191,9 +181,6 @@
       }
     }
   },
-  //# ----------------------------------------------------
-  //# downloadQueueManger related messages
-  //# ----------------------------------------------------
   "dqMgr_InvalidDestinationDirectoryMessage": {
     "message": "Please check the Destination field. It must be a valid absolute path.\n\n For now proceeding with the default Downloads directory...\n($1$)",
     "description": "",
@@ -264,16 +251,10 @@
     "message": "File creation failed!",
     "description": ""
   },
-  //# ----------------------------------------------------
-  //# global messages
-  //# ----------------------------------------------------
   "ReportRequestMessage": {
     "message": "There was some problem while I was doing my job.\n Please consider reporting this problem to my boss.\n\n If you say \"OK\", then a mail window will be opened,\n if you already have a mail client configured.",
     "description": ""
   },
-  //# ----------------------------------------------------
-  //# videoListManager related messages
-  //# ----------------------------------------------------
   "Unknown": {
     "message": "Unknown",
     "description": ""

@@ -185,7 +185,7 @@ var queueingStatusManager = {
             qsMgr.alreadyFinished = true;
         }
 
-var TextBoxElement = document.getElementById("successConsole");
+        var TextBoxElement = document.getElementById("successConsole");
         // var ti = document.getAnonymousNodes(TextBoxElement)[0].childNodes[0];
         TextBoxElement.scrollTop = TextBoxElement.scrollHeight;
     },
@@ -203,6 +203,9 @@ var TextBoxElement = document.getElementById("successConsole");
             // qsMgr.prepareBadLinksTextFile();
             // qsMgr.prepareGoodLinksTextFile();
             qsMgr.launchDownloadLinksFile();
+            if (qsMgr.preferences.closeQStatusWindow && qsMgr.failureCount === 0) {
+                window.close();
+            }
         }
 
         // if (qsMgr.failureCount > 0) {
@@ -215,9 +218,7 @@ var TextBoxElement = document.getElementById("successConsole");
         //                qsMgr.successCount > 0 && qsMgr.preferences.showDLWindow)
         //                iccb.services.downloadManagerUI.show();
 
-        if (qsMgr.preferences.closeQStatusWindow && qsMgr.failureCount == 0) {
-            window.close();
-        }
+        
 
     },
 
@@ -428,8 +429,8 @@ var TextBoxElement = document.getElementById("successConsole");
             "</tr>";
 
             var k = 1;
-            for (var i = 0; i < qsMgr.selectedVideoList.length; i++) {
-                if (qsMgr.selectedVideoList[i].videoURL != "") {
+            for (i = 0; i < qsMgr.selectedVideoList.length; i++) {
+                if (qsMgr.selectedVideoList[i].videoURL !== "") {
                     var fetchedLangName = qsMgr.selectedVideoList[i].fetchedLangName;
                     var actualPrefLangName = qsMgr.selectedVideoList[i].actualPrefLangName;
 
@@ -439,7 +440,7 @@ var TextBoxElement = document.getElementById("successConsole");
                     qsMgr.selectedVideoList[i].fileType +
                     "</a></td><td>" + qsMgr.selectedVideoList[i].videoQuality + "</td>" +
                     (qsMgr.preferences.fetchSubtitles ?
-                        "<td>" + (fetchedLangName == null ?
+                        "<td>" + (fetchedLangName === null ?
                             strings.getString("None") :
                             "<span class='ruby'>" + fetchedLangName + "</span>") +
                         ((!actualPrefLangName || fetchedLangName == actualPrefLangName) ?
@@ -485,7 +486,7 @@ var TextBoxElement = document.getElementById("successConsole");
         // win.document.write(htmlString);
 
         var urldata = "data:text/html," + htmlString;
-        chrome.tabs.create({ active: false, url: urldata }, function (newtab){
+        chrome.tabs.create({ active: false, url: urldata }, function (newtab) {
             //newtab.executeScript({ code: "document.innerHTML = " + htmlString });
             // newtab.executeScript({ code: "alert('hugo toll');" });
         });
@@ -493,24 +494,24 @@ var TextBoxElement = document.getElementById("successConsole");
         // chrome.tabs.create({ active: false, url: 'result.html' });
 
         
-//         var newnew = chrome.extension.getURL('result.html');
-//         chrome.tabs.create({ active: false, url: newnew }, function (newtab) {
-// 
-//             chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-//                 if (tabId == newtab.id) {
-//                     if (changeInfo.status == 'complete') {
-//                         chrome.tabs.sendMessage(tabId, { action: "show", value: htmlString });
-//                         // var wins = chrome.extension.getViews({ type: 'tab' });
-//                         // for (var i = 0, win; win = wins[i]; i++) {
-//                         //     if (win.location.href == newnew) {
-//                         //         //win.document.innerHTML = htmlString;
-//                         //         win.document.write(htmlString);
-//                         //     }
-//                         // }
-//                     }
-//                 }
-//             });
-//         });
+        //         var newnew = chrome.extension.getURL('result.html');
+        //         chrome.tabs.create({ active: false, url: newnew }, function (newtab) {
+        // 
+        //             chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+        //                 if (tabId == newtab.id) {
+        //                     if (changeInfo.status == 'complete') {
+        //                         chrome.tabs.sendMessage(tabId, { action: "show", value: htmlString });
+        //                         // var wins = chrome.extension.getViews({ type: 'tab' });
+        //                         // for (var i = 0, win; win = wins[i]; i++) {
+        //                         //     if (win.location.href == newnew) {
+        //                         //         //win.document.innerHTML = htmlString;
+        //                         //         win.document.write(htmlString);
+        //                         //     }
+        //                         // }
+        //                     }
+        //                 }
+        //             });
+        //         });
 
 
         // var file = writeTextToFile(htmlString,

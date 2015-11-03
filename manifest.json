@@ -9,13 +9,6 @@
     "default_icon": "gfx/icon.png",
     "default_popup": "popup.html"
   },
-  // "background": {
-  //   // "scripts": [
-  //   //   "selectionManager.js", "queueingStatusManager.js"
-  //   // ],
-  //   // "persistent": false,
-  //   "page": "result.html"
-  // },  
   "icons": {
     "16": "gfx/Down-16.png",
     "24": "gfx/Down-24.png",
@@ -24,47 +17,19 @@
     "64": "gfx/icon.png",
     "128": "gfx/Down-128.png"
   },
-  // "content_scripts": [
-  //   {
-  //     "matches": [
-  //       "http://*.youtube.com/*",
-  //       "https://*.youtube.com/*"
-  //     ],
-  //     "js": [
-  //       "globals.js",
-  //       "utf.js",
-  //       "langList.js",
-  //       "subtitles.js",
-  //       "xmlHttpRequestManager.js",
-  //       "videoListManager.js",
-  //       "downloadQueueManager.js"
-  //       // "selectionManager.js"
-  //     ]
-  //   }
-  // ],
   "options_page": "options.html",
   "options_ui": {
-    // Required.
     "page": "options.html",
-    // Recommended.
     "chrome_style": true
-    // Not recommended; only provided for backwards compatibility,
-    // and will be unsupported in a future version of Chrome (TBD).
-    //"open_in_tab": true
   },
   "default_locale": "en",
   "permissions": [
-    // "background",
     "notifications",
     "tabs",
     "activeTab",
     "downloads",
     "storage",
-    // "http://*.youtube.com/*",
-    // "https://*.youtube.com/*",
-    //  "<all_urls>",
     "*://*/*",
-    // "*://llonihmniahpaajmemgolkkfeccfgcjg/*",
     "contextMenus",
     "clipboardRead",
     "clipboardWrite"

@@ -47,7 +47,7 @@ function GetAllSettings2(OnStart) {
         $('#qualityNew').prop('selectedIndex', GetSetting('qualityNew'));
         $('#todo').prop('selectedIndex', GetSetting('todo'));
         $('#destination').attr('value', GetSetting('destination'));
-        if (OnStart == true) {
+        if (OnStart === true) {
             // Erst starten wenn die Settings geladen wurden.
             OnBeginRequestMulti();
         }
@@ -56,7 +56,7 @@ function GetAllSettings2(OnStart) {
 
 
 function SetSetting(key, value) {
-    if (prefs != null) {
+    if (prefs !== null) {
         prefs[key] = value;
         chrome.storage.sync.set(prefs, function () { console.log('successfully saved'); });
     }
@@ -65,7 +65,7 @@ function SetSetting(key, value) {
 }
 
 function GetSetting(key) {
-    if (prefs != null)
+    if (prefs !== null)
         return prefs[key];
     else
         return 0;
@@ -116,14 +116,14 @@ $(document).ready(function () {
         if (areaName == 'sync') {
             console.log('Settings changed');
             prefs = GetAllSettings2();
-        };                
+        }
     });
     
       // $('button').toggleClass('VerticalCenter', true);
       // $('img').toggleClass('VerticalCenter', true);
       // $('label').toggleClass('VerticalCenter', true);
     // $(window).keypress(function (event) { keyPressed(event); });
-    $('#links').on('contextmenu', function (event) { return false; onBuildContextMenu(event); });
+    $('#links').on('contextmenu', function (event) { return false; /*onBuildContextMenu(event);*/ });
     //$('#links').mouseleave(function (event) { onRemoveContextMenu(event) });    
     // $('#links').keydown(function (event) { onKeyDown(event) });
     // $('#selectfile').change(function (event) {
@@ -234,7 +234,7 @@ function applyFilter(filterText) {
 
     var selection = $('#links').children('tr');
 
-    if (filterText == "") {
+    if (filterText === "") {
         $('#selectAll')[0].checked = false;
         selection.toggleClass('selected', false);
         OnSelect();
@@ -263,7 +263,7 @@ function onFilterChange(event) {
 
 function onBuildContextMenu(event) {
 
-    if (ContextMenuID == "") {
+    if (ContextMenuID === "") {
         onRemoveContextMenu(event);
         var title = "Test '" + "browser_action" + "' menu item";
         ContextMenuID = chrome.contextMenus.create({ "title": title, "contexts": ["page"], "onclick": genericOnClick });
@@ -398,7 +398,7 @@ function onStart(event) {
         var proceed = true;
         if (selCount > 5 &&
             preferences.todo == ENQUEUE_LINKS &&
-            suppressWarnings == false) {
+            suppressWarnings === false) {
 
             proceed = confirm(
                 strings.getString("NotGoodIdea") + strings.getString("NotGoodIdeaMessage"));
@@ -601,7 +601,7 @@ function OnBeginRequestMulti() {
             for (var index = 0; index < activeTabs.length; index++) {
                 var tab = activeTabs[index];
                 // Chrome URLs überspringen
-                if (tab.url.indexOf("chrome") == 0) { console.warn(tab.url + ' skipped!'); continue }
+                if (tab.url.indexOf("chrome") === 0) { console.warn(tab.url + ' skipped!'); continue; }
                 //console.log(tab.url);
                 
                 
@@ -632,7 +632,7 @@ function OnBeginRequestMulti() {
             }
 
             // Wenn keine Tabs zum checken da sind, eventuelle Clipboard-Links nehmen
-            if (LocalTabURLs.length == 0) {
+            if (LocalTabURLs.length === 0) {
                 TakeLinks(links,null);
             }
             else
@@ -660,13 +660,13 @@ function OnBeginRequestMulti() {
 function TakeLinks(links, currentDocument) {
     // If no YouTube links were found on 'this' page, alert the user
     // "No YouTube links were found on this page."
-    if (links.length == 0) {
+    if (links.length === 0) {
         var message = strings.getString("NoLinksOnPage");
         message += ".";
         alert(message);
     }
     else {
-        if (currentDocument == null) {
+        if (currentDocument === null) {
             currentDocument = { URL: links[0].href, title: "" };
         }
 
@@ -700,7 +700,7 @@ function getLinksFromClipboard(links) {
     }
 
     buildLinksForVids(vids, links, processedVids);
-};
+}
 
 ///////////////////////////
 // Mit Ajax Request Ende //
@@ -872,7 +872,7 @@ function processYouTubePage(html) {
 // getFailureString(youTubePageHTML)
 function getFailureString(aHTMLString) {
     var failureString = "";
-    if (aHTMLString && aHTMLString != "") {
+    if (aHTMLString && aHTMLString !== "") {
 
 
         var htmlDoc = document.implementation.createHTMLDocument("example");
@@ -892,7 +892,7 @@ function getFailureString(aHTMLString) {
         failureString = failureString.replace(/<a [^>]*>/ig, "").replace(/<\/a(\s|\n)*>/ig, "");
     }
 
-    if (failureString == "")
+    if (failureString === "")
         failureString = strings.getString("GenericFailureMessage");
 
     return failureString;
@@ -906,7 +906,7 @@ function buildVideoList(links) {
 
     var ti = document.getElementById("links");
     while (ti.children.length > 1) {
-         ti.removeChild(ti.children[ti.children.length - 1])
+         ti.removeChild(ti.children[ti.children.length - 1]);
   	  }
 
     for (var li = 0; li < links.length; li++) {
@@ -916,7 +916,7 @@ function buildVideoList(links) {
         // This is faster than getVidFromUrl
         // probably because of instruction caching.
         var curVid = getVidsFromText(links[li].href)[0];
-        if (!curVid || curVid == "")
+        if (!curVid || curVid === "")
             continue;
 
         var title = "";
@@ -942,12 +942,12 @@ function buildVideoList(links) {
             videoList[vi].displayTitle = displayTitle;
         }
 
-        if (displayTitle.length == 0 || hasUndesirablePatterns(displayTitle)) {
+        if (displayTitle.length === 0 || hasUndesirablePatterns(displayTitle)) {
             displayTitle = "Loading";
             title = "";
         }
 
-        if (found == false) {
+        if (found === false) {
             videoList[vidCount] = new YoutubeVideo(); // <- videoListManager.js
 
             videoList[vidCount].vid = curVid;
@@ -990,7 +990,7 @@ function buildVideoList(links) {
                 OnSelect();
             });
                        
-            $(tr).toggleClass("selected")
+            $(tr).toggleClass("selected");
 
             tr.appendChild(tc1);
 
@@ -1411,7 +1411,7 @@ function getTitleAndDisplayTitle(link) {
         }
     }
 
-    if (!title || title.length == 0) {
+    if (!title || title.length === 0) {
         // in case title was null, set it to empty string.
         title = "";
         displayTitle = "";
@@ -1435,7 +1435,7 @@ function getTitleAndDisplayTitle(link) {
 
     title = stripSpace(title);
 
-    if (title.length == 0 && link.title) {
+    if (title.length === 0 && link.title) {
         var text1 = link.title;
         displayTitle = stripHTML(text1, 3);
         title = processTitle(displayTitle);
@@ -1443,7 +1443,7 @@ function getTitleAndDisplayTitle(link) {
 
     title = stripSpace(title);
 
-    if (title.length == 0) {
+    if (title.length === 0) {
         var text = link.innerHTML;
 
         if (text) {
@@ -1500,7 +1500,7 @@ function InvocationInfo() {
 
 // buildLinks builds anchors from contentDocument and clipboard
 function buildLinks(contentDocument, links) {
-    if (links == null)
+    if (links === null)
         links = [];
 
     var processedVids = [];
@@ -1893,7 +1893,7 @@ function XmlHttpRequestManager(callerObject, callBack, errorHandler)
     {
         try
         {
-            if (typeof(this.xmlreqs[pos]) && this.xmlreqs[pos].freed == 0)
+            if (typeof(this.xmlreqs[pos]) && this.xmlreqs[pos].freed === 0)
             {
                 var xmlhttp = this.xmlreqs[pos].xmlhttp;
                 
@@ -1903,7 +1903,7 @@ function XmlHttpRequestManager(callerObject, callBack, errorHandler)
                     {
                         this.xmlreqs[pos].requestCompleted = true;
 
-                        if(this.callBack != null && this.callBack != 'undefined')
+                        if(this.callBack !== null && this.callBack != 'undefined')
                         {
                             var returnValue = xmlhttp.responseText;
                             this.callBack(this.callerObject, returnValue, url, pos);
@@ -1926,7 +1926,7 @@ function XmlHttpRequestManager(callerObject, callBack, errorHandler)
                     //alert(xmlhttp.readyState);
                     var returnValue = xmlhttp.getAllResponseHeaders();
 
-                    if(this.callBack != null && this.callBack != 'undefined' && this.xmlreqs[pos].freed == 0)
+                    if(this.callBack !== null && this.callBack != 'undefined' && this.xmlreqs[pos].freed === 0)
                     {
                         this.xmlreqs[pos].freed = 1;
                         this.callBack(this.callerObject, returnValue, url);
@@ -1948,12 +1948,7 @@ function XmlHttpRequestManager(callerObject, callBack, errorHandler)
     // End
 }
 
-function VideoListManager(callerObject,
-                                                    callBack,
-                                                    errorHandler,
-                                                    videoList,
-                                                    preferences,
-                                                    subtitleLanguageInfo)
+function VideoListManager(callerObject, callBack, errorHandler, videoList, preferences, subtitleLanguageInfo)
 {
     this.callerObject   = callerObject;
     this.videoList      = videoList;
@@ -2027,7 +2022,7 @@ function VideoListManager(callerObject,
             
             if(swf_map["status"] != "ok"
                 || !swf_map["url_encoded_fmt_stream_map"]
-                || swf_map["url_encoded_fmt_stream_map"] == ""
+                || swf_map["url_encoded_fmt_stream_map"] === ""
                 || swf_map["url_encoded_fmt_stream_map"].indexOf("url") == -1
                 )
             {
@@ -2063,7 +2058,7 @@ function VideoListManager(callerObject,
                         swf_map = processYouTubePage(html);
 
                         if(swf_map && swf_map["url_encoded_fmt_stream_map"]
-                                && swf_map["url_encoded_fmt_stream_map"] != ""
+                                && swf_map["url_encoded_fmt_stream_map"] !== ""
                                 && swf_map["url_encoded_fmt_stream_map"].indexOf("url") != -1
                             )
                         {
@@ -2259,7 +2254,7 @@ function VideoListManager(callerObject,
 
             //alert(this.videoList[index].videoURL);
             
-            if(this.videoList[index].failureDescription == null)
+            if(this.videoList[index].failureDescription === null)
                 this.videoList[index].failureDescription  = "";
                   
     };
