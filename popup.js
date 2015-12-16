@@ -663,7 +663,8 @@ function TakeLinks(links, currentDocument) {
     if (links.length === 0) {
         var message = strings.getString("NoLinksOnPage");
         message += ".";
-        alert(message);
+        //alert(message);
+        console.log(message);
     }
     else {
         if (currentDocument === null) {

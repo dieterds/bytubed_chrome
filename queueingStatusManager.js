@@ -2,6 +2,8 @@
 // window.onload = queueingStatusManager.onload;
 // window.onunload = queueingStatusManager.onUnload;
 
+var AsHTMLFile = true;
+
 var DownloadQueueManager = function (callBack, errorHandler, destDir, vList, prefs, subtitleLanguageInfo) {
     //this.caller                    = caller;
     this.destinationDirectory = destDir;
@@ -60,7 +62,7 @@ var DownloadQueueManager = function (callBack, errorHandler, destDir, vList, pre
     this.enqueue = function enqueue(videoIndex) {
         var urllink = this.videoList[videoIndex].videoURL;
         var filenamelocal = this.videoList[videoIndex].title + this.videoList[videoIndex].fileType;
-        chrome.downloads.download({ url: urllink, filename: filenamelocal, conflictAction: "uniquify"}, function (id) {
+        chrome.downloads.download({ url: urllink, filename: filenamelocal, conflictAction: "uniquify" }, function (id) {
  	      });
     };
 };
@@ -436,7 +438,7 @@ var queueingStatusManager = {
 
                     htmlString += "\n\t\t\t\t <tr><td>" + (k++) + "</td><td><a href=\"" +
                     qsMgr.selectedVideoList[i].videoURL + "\">" +
-                    escape(qsMgr.selectedVideoList[i].displayTitle) +
+                    (AsHTMLFile ? qsMgr.selectedVideoList[i].displayTitle : escape(qsMgr.selectedVideoList[i].displayTitle)) +
                     qsMgr.selectedVideoList[i].fileType +
                     "</a></td><td>" + qsMgr.selectedVideoList[i].videoQuality + "</td>" +
                     (qsMgr.preferences.fetchSubtitles ?
@@ -480,16 +482,22 @@ var queueingStatusManager = {
 
         htmlString += "\n\t </body>" +
         "\n </html>";
+
+        if (AsHTMLFile) {
+            var bgPage = chrome.extension.getBackgroundPage();
+            chrome.tabs.create({ active: false, url: chrome.extension.getURL('output.html?id=' + qsMgr.expiryTime) }, function (newtab) {
+                bgPage.dataob[qsMgr.expiryTime] = htmlString;
         
                         
-        // var win = window.open('');
-        // win.document.write(htmlString);
+            })
+        }
+        else {                        
 
-        var urldata = "data:text/html," + htmlString;
-        chrome.tabs.create({ active: false, url: urldata }, function (newtab) {
-            //newtab.executeScript({ code: "document.innerHTML = " + htmlString });
-            // newtab.executeScript({ code: "alert('hugo toll');" });
-        });
+            var urldata = "data:text/html," + htmlString;
+            chrome.tabs.create({ active: false, url: urldata }, function (newtab) {
+            });
+        }
+        
 
         // chrome.tabs.create({ active: false, url: 'result.html' });
 
