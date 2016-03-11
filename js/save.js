@@ -1,1 +1,1 @@
-var dataob = {};
+var data = [];

@@ -1,11 +1,12 @@
-﻿$(document).ready(function () {
-	var bgPage = chrome.extension.getBackgroundPage();
-	var params = getParamsFromUrl(document.URL);
-	if (params["id"] != null)
-	{
-		this.body.innerHTML = bgPage.dataob[params["id"]];
-	 }
-	
+﻿$(document).ready(function() {
+    var bgPage = chrome.extension.getBackgroundPage();
+    var params = getParamsFromUrl(document.URL);
+    if (params["data"] !== null && bgPage.data[params["data"]] !== undefined) {
+        this.body.innerHTML = bgPage.data[params["data"]];
+    }
+    else{
+        this.body.innerHTML =  "No data under this ID !";
+    }
 });
 
 

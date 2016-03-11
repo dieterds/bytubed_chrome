@@ -485,10 +485,9 @@ var queueingStatusManager = {
 
         if (AsHTMLFile) {
             var bgPage = chrome.extension.getBackgroundPage();
-            chrome.tabs.create({ active: false, url: chrome.extension.getURL('output.html?id=' + qsMgr.expiryTime) }, function (newtab) {
-                bgPage.dataob[qsMgr.expiryTime] = htmlString;
-        
-                        
+            
+            chrome.tabs.create({ active: false, url: chrome.extension.getURL('output.html?data=' + bgPage.data.length) }, function(newtab) {
+                bgPage.data[bgPage.data.length] = htmlString;
             })
         }
         else {                        
