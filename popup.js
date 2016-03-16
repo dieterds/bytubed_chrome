@@ -49,7 +49,8 @@ function GetAllSettings2(OnStart) {
         $('#destination').attr('value', GetSetting('destination'));
         if (OnStart === true) {
             // Erst starten wenn die Settings geladen wurden.
-            OnBeginRequestMulti();
+            //OnBeginRequestMulti();
+            OnBeginGetDocumentMulti();
         }
     });
 }
@@ -95,8 +96,9 @@ $(document).ready(function () {
     //         GetSetting('destination'));
     // });
 
-    $('#testbutton').click(function (event) { OnBeginRequestMulti(event); });
-    // $('#testbutton').click(function (event) { OnBeginGetDocumentOne(event); });
+    // $('#testbutton').click(function (event) { OnBeginRequestMulti(event); });
+    $('#testbutton').click(function(event) { OnBeginGetDocumentMulti(event); });
+    $('#testgetvideocount').click(function(event) { OnTestGetVideoCount(event); });
     $('#loadsettings').click(function (event) { GetAllSettings2(); });
     $('#getcb').click(function (event) { getClipboard();});
     $('#setcb').click(function (event) { setClipboard($("#sandbox").val());});
@@ -138,6 +140,7 @@ $(document).ready(function () {
     //OnBeginRequestOne();
     //OnBeginRequestMulti();
 });
+
 
 function SetActive(tab) {
     if (tab == 1) {
@@ -462,138 +465,32 @@ var suppressWarnings = false;
 /////////////////////////////////////////
 // Javascript GetContentDocument Start //
 /////////////////////////////////////////
-// var LocalActiveTabs = 0;
-// var LocalActiveTabsHTML = {};
-// var LocalTabIDs = [];
-// 
-// function OnBeginGetDocumentOne() {
-//     LocalActiveTabs = 0;
-//     LocalActiveTabsHTML = {};
-//     LocalTabIDs = [];
-//     chrome.tabs.query({ active: true, currentWindow: true },
-//         function (activeTabs) {
-//             var tab = activeTabs[0];
-//             var TabID = tab.id;
-//             if (tab.url.indexOf("chrome") == 0) return;
-//             LocalTabIDs.push(TabID);
-//             LocalActiveTabs = LocalTabIDs.length;
-//             chrome.tabs.executeScript(
-//                 TabID, { file: 'getcontentdocument.js', allFrames: false });
-//         }
-//         );
-// };
-// 
-// function OnBeginGetDocumentMulti() {
-//     var scanAllTabs = prefs["scanAllTabs"];
-//     LocalActiveTabs = 0;
-//     LocalActiveTabsHTML = {};
-//     LocalTabIDs = [];
-//     
-//     // Tabs
-//     chrome.tabs.query({ currentWindow: true },
-//         function (activeTabs) {
-//             for (var index = 0; index < activeTabs.length; index++) {
-//                 var tab = activeTabs[index];
-//                 // Chrome URLs überspringen
-//                 if (tab.url.indexOf("chrome") == 0) { console.warn(tab.url + ' skipped!'); continue }
-//                 //console.log(tab.url);
-//                                 
-//                 // Alle Tabs
-//                 if (scanAllTabs) {
-//                     // Active Tab an den Anfang
-//                     if (tab.active) {
-//                         console.info(tab.url);
-//                         LocalTabIDs.unshift(tab.id);
-//                     }
-//                     // Sonst ans Ende
-//                     else {
-//                         console.info(tab.url);
-//                         LocalTabIDs.push(tab.id);
-//                     }
-//                 }
-//                 // Nur aktiver Tab
-//                 else
-//                     if (tab.active) {
-//                         console.info(tab.url);
-//                         LocalTabIDs.unshift(tab.id);
-//                     }
-//             }
-//             LocalActiveTabs = LocalTabIDs.length;
-// 
-//             for (var index = 0; index < LocalTabIDs.length; index++) {
-//                 var TabID = LocalTabIDs[index];
-//                 chrome.tabs.executeScript(
-//                     TabID, { file: 'getcontentdocument.js', allFrames: false });
-//             }
-//         });
-// };
-// 
-// 
-// chrome.runtime.onMessage.addListener(function (inmessage, sender, sendResponse) {
-// 
-//     //if (sender.tab == null) return;
-//     console.log(sender.tab ?
-//         "from a content script:" + sender.tab.url :
-//         "from the extension");
-//     var currentDocument = document.implementation.createHTMLDocument(sender.tab.url);
-//     currentDocument.documentElement.innerHTML = inmessage;
-//     currentDocument.href = sender.tab.url;
-//     LocalActiveTabsHTML[sender.tab.url] = currentDocument;
-//     LocalActiveTabs--;
-// 
-//     if (LocalActiveTabs == 0) {
-//         //starten, alle elemente da.
-//         console.log('Sind fertig, könnten starten!');
-// 
-//         var links = new Array;
-// 
-//         for (var key in LocalActiveTabsHTML) {
-//             if (LocalActiveTabsHTML.hasOwnProperty(key)) {
-//                 currentDocument = LocalActiveTabsHTML[key];
-//                 buildLinks(currentDocument, links);
-//             }
-//         }
-// 
-//        
-//         // If no YouTube links were found on 'this' page, alert the user
-//         // "No YouTube links were found on this page."
-//         if (links.length == 0) {
-// 
-//             var message = "NoLinksOnPage";
-//             message += ".";
-// 
-//             alert(message);
-// 
-//             // selMgr.aborting = true;
-//             // window.close();
-//         }
-//         else {
-//             invocationInfo = new InvocationInfo();
-//             invocationInfo.timeStamp = new Date().toString();
-//             invocationInfo.sourcePageUrl = currentDocument.URL;
-//             invocationInfo.sourcePageTitle = currentDocument.URL;
-//             if (currentDocument.title && currentDocument.title.length > 0)
-//                 invocationInfo.sourcePageTitle = currentDocument.title;
-//                
-//             // populate the videoList before applying default fliters
-//             buildVideoList(links); // works by side-effect
-//             setStatus(videoList.length +
-//                 " " + strings.getString("LinkCountOnPage"));
-//             loadFlags();
-//         }
-//     }
-// });
-////////////////////////////////////////
-// Javascript GetContentDocument Ende //
-////////////////////////////////////////
+var LocalActiveTabs = 0;
+var LocalActiveTabsHTML = {};
+var LocalTabIDs = [];
 
-////////////////////////////
-// Mit Ajax Request Start //
-////////////////////////////
-function OnBeginRequestMulti() {
-    var scanAllTabs = prefs["scanAllTabs"] ? prefs["scanAllTabs"] : false;
-    var scanCB = prefs["scanClipboard"] ? prefs["scanClipboard"] : false;
-    var LocalTabURLs = [];    
+function OnBeginGetDocumentOne() {
+    LocalActiveTabs = 0;
+    LocalActiveTabsHTML = {};
+    LocalTabIDs = [];
+    chrome.tabs.query({ active: true, currentWindow: true },
+        function (activeTabs) {
+            var tab = activeTabs[0];
+            var TabID = tab.id;
+            if (tab.url.indexOf("chrome") === 0) return;
+            LocalTabIDs.push(TabID);
+            LocalActiveTabs = LocalTabIDs.length;
+            chrome.tabs.executeScript(
+                TabID, { file: 'js/getcontentdocument.js', allFrames: false });
+        }
+        );
+};
+
+function OnBeginGetDocumentMulti() {
+     var scanAllTabs = prefs["scanAllTabs"] ? prefs["scanAllTabs"] : false;    
+    LocalActiveTabs = 0;
+    LocalActiveTabsHTML = {};
+    LocalTabIDs = [];
     
     // Tabs
     chrome.tabs.query({ currentWindow: true },
@@ -601,63 +498,157 @@ function OnBeginRequestMulti() {
             for (var index = 0; index < activeTabs.length; index++) {
                 var tab = activeTabs[index];
                 // Chrome URLs überspringen
-                if (tab.url.indexOf("chrome") === 0) { console.warn(tab.url + ' skipped!'); continue; }
+                if (tab.url.indexOf("chrome") === 0) { console.warn(tab.url + ' skipped!'); continue }
                 //console.log(tab.url);
-                
+
                 
                 // Alle Tabs
                 if (scanAllTabs) {
                     // Active Tab an den Anfang
                     if (tab.active) {
                         console.info(tab.url);
-                        LocalTabURLs.unshift(tab.url);
+                        LocalTabIDs.unshift(tab.id);
                     }
                     // Sonst ans Ende
                     else {
                         console.info(tab.url);
-                        LocalTabURLs.push(tab.url);
+                        LocalTabIDs.push(tab.id);
                     }
                 }
                 // Nur aktiver Tab
                 else
                     if (tab.active) {
                         console.info(tab.url);
-                        LocalTabURLs.unshift(tab.url);
+                        LocalTabIDs.unshift(tab.id);
                     }
             }
+            LocalActiveTabs = LocalTabIDs.length;
 
-            var links = [];
-            if (scanCB) {
-                getLinksFromClipboard(links);
+            for (var index = 0; index < LocalTabIDs.length; index++) {
+                var TabID = LocalTabIDs[index];
+                chrome.tabs.executeScript(
+                    TabID, { file: 'js/getcontentdocument.js', allFrames: false });
             }
 
-            // Wenn keine Tabs zum checken da sind, eventuelle Clipboard-Links nehmen
-            if (LocalTabURLs.length === 0) {
-                TakeLinks(links,null);
+            // Wenn 0 Tabs geeignet, dann aber Clipboard checken            
+            if (LocalTabIDs.length === 0) {
+                var links = [];
+                TakeLinks(links, null);
             }
-            else
-                AjaxRequestsMulti(LocalTabURLs,
-                    function (data) {
-                        //console.log('callback');                                    
-                      
-                        //starten, alle elemente da.
-                        // console.log('Sind fertig, könnten starten!');
-                        var currentDocument;
-                        for (var key in data) {
-                            if (data.hasOwnProperty(key)) {
-                                currentDocument = data[key];
-                                buildLinks(currentDocument, links);
-                            }
-                        }
-                        TakeLinks(links,currentDocument);
-                    },
-                    function (data) {
-                        console.log('failedcallback');
-                    });
         });
-}
+};
+
+
+chrome.runtime.onMessage.addListener(function(inmessage, sender, sendResponse) {
+    if (inmessage["content"] === undefined) return;
+    var innerHTML = inmessage["content"];
+    //if (sender.tab == null) return;
+    // console.log(sender.tab ?
+    //     "from a content script:" + sender.tab.url :
+    //     "from the extension");
+    var currentDocument = document.implementation.createHTMLDocument(sender.tab.url);
+    currentDocument.documentElement.innerHTML = innerHTML;
+    currentDocument.href = sender.tab.url;
+    LocalActiveTabsHTML[sender.tab.url] = currentDocument;
+    LocalActiveTabs--;
+
+    if (LocalActiveTabs === 0) {
+        var links = [];
+        //starten, alle elemente da.
+        console.log('Sind fertig, könnten starten!');
+        
+        for (var key in LocalActiveTabsHTML) {
+            if (LocalActiveTabsHTML.hasOwnProperty(key)) {
+                currentDocument = LocalActiveTabsHTML[key];
+                buildLinks(currentDocument, links);
+            }
+        }
+
+       TakeLinks(links,currentDocument);       
+    }
+});
+////////////////////////////////////////
+// Javascript GetContentDocument Ende //
+////////////////////////////////////////
+
+////////////////////////////
+// Mit Ajax Request Start //
+////////////////////////////
+// function OnBeginRequestMulti() {
+//     var scanAllTabs = prefs["scanAllTabs"] ? prefs["scanAllTabs"] : false;
+//     var scanCB = prefs["scanClipboard"] ? prefs["scanClipboard"] : false;
+//     var LocalTabURLs = [];    
+    
+//     // Tabs
+//     chrome.tabs.query({ currentWindow: true },
+//         function (activeTabs) {
+//             for (var index = 0; index < activeTabs.length; index++) {
+//                 var tab = activeTabs[index];
+//                 // Chrome URLs überspringen
+//                 if (tab.url.indexOf("chrome") === 0) { console.warn(tab.url + ' skipped!'); continue; }
+//                 //console.log(tab.url);
+                
+                
+//                 // Alle Tabs
+//                 if (scanAllTabs) {
+//                     // Active Tab an den Anfang
+//                     if (tab.active) {
+//                         console.info(tab.url);
+//                         LocalTabURLs.unshift(tab.url);
+//                     }
+//                     // Sonst ans Ende
+//                     else {
+//                         console.info(tab.url);
+//                         LocalTabURLs.push(tab.url);
+//                     }
+//                 }
+//                 // Nur aktiver Tab
+//                 else
+//                     if (tab.active) {
+//                         console.info(tab.url);
+//                         LocalTabURLs.unshift(tab.url);
+//                     }
+//             }
+
+//             var links = [];
+// //             if (scanCB) {
+// //                 getLinksFromClipboard(links);
+// //             }
+
+//             // Wenn keine Tabs zum checken da sind, eventuelle Clipboard-Links nehmen
+//             if (LocalTabURLs.length === 0) {
+//                 TakeLinks(links,null);
+//             }
+//             else
+//                 AjaxRequestsMulti(LocalTabURLs,
+//                     function (data) {
+//                         //console.log('callback');                                    
+                      
+//                         //starten, alle elemente da.
+//                         // console.log('Sind fertig, könnten starten!');
+//                         var currentDocument;
+//                         for (var key in data) {
+//                             if (data.hasOwnProperty(key)) {
+//                                 currentDocument = data[key];
+//                                 buildLinks(currentDocument, links);
+//                             }
+//                         }
+//                         TakeLinks(links,currentDocument);
+//                     },
+//                     function (data) {
+//                         console.log('failedcallback');
+//                     });
+//         });
+// }
 
 function TakeLinks(links, currentDocument) {
+    var scanCB = prefs["scanClipboard"] ? prefs["scanClipboard"] : false;
+
+    if (scanCB) {
+        getLinksFromClipboard(links);
+    }
+
+
     // If no YouTube links were found on 'this' page, alert the user
     // "No YouTube links were found on this page."
     if (links.length === 0) {
@@ -677,7 +668,7 @@ function TakeLinks(links, currentDocument) {
         invocationInfo.sourcePageTitle = currentDocument.URL;
         if (currentDocument.title && currentDocument.title.length > 0)
             invocationInfo.sourcePageTitle = currentDocument.title;
-                
+
         // populate the videoList before applying default fliters
         buildVideoList(links); // works by side-effect
         setStatus(videoList.length +
@@ -908,7 +899,8 @@ function buildVideoList(links) {
     var ti = document.getElementById("links");
     while (ti.children.length > 1) {
          ti.removeChild(ti.children[ti.children.length - 1]);
-  	  }
+    }
+    videoList = [];
 
     for (var li = 0; li < links.length; li++) {
         // li stands for link index
