@@ -7,7 +7,8 @@
 
 var prefs = GetAllSettings();
 
-$(document).ready(function () {
+$(document).ready(function() {
+
   restore_options();
   $('#load').click(function () { restore_options(); });
   $('#save').click(function () { save_options(); });
@@ -73,8 +74,10 @@ function save_options() {
   chrome.storage.sync.set(obj, function () {
     for (var key in obj) {
       console.log(key + '=' + obj[key]);
-    }
-    console.log('successfully saved');    
+      }
+      console.log('successfully saved');
+      var bgPage = chrome.extension.getBackgroundPage();
+      bgPage.bShowNumber = obj["showcount"];
   });
 }
 
