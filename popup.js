@@ -1618,6 +1618,9 @@ var undesirablePattern =
         "play.all|view.comments|return.to|play.video|" +
         "sign.out|sign.in|switch.account|^(none)$", "igm");
 
+var youTubeFilterPatterns =
+    new RegExp("^http.+?http.+?youtube\\.com.+", "ig");
+
 var youTubePatterns =
     new RegExp("(youtube\\.com\\/v\\/|\\/watch\\?v=|" +
         "youtube\\.com\\/embed\\/|\\/movie?v=|" +
@@ -1827,16 +1830,18 @@ function getVidsFromText(text) {
     return vids;
 }
 
-function isYouTubeLink(link) {                
+function isYouTubeLink(link) {
     // Reset the lastIndex to 0 so that the next regex pattern match will
     // happen from the beginning. This is a fix suggested by Phil, 
     // to overcome the problem of skipped anchors.
     youTubePatterns.lastIndex = 0;
-    return youTubePatterns.test(link);
+    youTubeFilterPatterns.lastIndex = 0;
+
+    if (youTubeFilterPatterns.test(link))
+        return false;
+    else
+        return youTubePatterns.test(link);
 }
-
-
-
 
 
 function CXMLReq(freed)

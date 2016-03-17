@@ -174,6 +174,8 @@ function buildLinks(contentDocument, links) {
 
 }
 
+var youTubeFilterPatterns =
+    new RegExp("^http.+?http.+?youtube\\.com.+", "ig");
 
 var youTubePatterns =
     new RegExp("(youtube\\.com\\/v\\/|\\/watch\\?v=|" +
@@ -377,7 +379,12 @@ function isYouTubeLink(link) {
     // happen from the beginning. This is a fix suggested by Phil, 
     // to overcome the problem of skipped anchors.
     youTubePatterns.lastIndex = 0;
-    return youTubePatterns.test(link);
+    youTubeFilterPatterns.lastIndex = 0;
+
+    if (youTubeFilterPatterns.test(link))
+        return false;
+    else
+        return youTubePatterns.test(link);
 }
 
 
