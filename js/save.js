@@ -2,17 +2,20 @@ var data = [];
 
 var bShowNumber = false;
 var prefs = null;
+var RefreshTimer = null;
 GetAllSettings2();
 
 function GetAllSettings2(OnStart) {
-    chrome.storage.sync.get(null, function(items) {
+    chrome.storage.sync.get(null, function (items) {
         prefs = items;
         console.log('successfully loaded');
         bShowNumber = prefs['showcount'];
 
-        chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+        chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+            if (RefreshTimer !== null) clearInterval(RefreshTimer);
             if (bShowNumber) {
                 OnGetVideoCount();
+                RefreshTimer = setInterval(function () { OnGetVideoCount(); }, 3000);
             }
         });
     });
@@ -21,7 +24,7 @@ function GetAllSettings2(OnStart) {
 
 function OnGetVideoCount(event) {
     chrome.tabs.query({ active: true, currentWindow: true },
-        function(activeTabs) {
+        function (activeTabs) {
             var tab = activeTabs[0];
             if (tab === undefined) return;
 
@@ -34,7 +37,7 @@ function OnGetVideoCount(event) {
     );
 }
 
-chrome.runtime.onMessage.addListener(function(inmessage, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (inmessage, sender, sendResponse) {
     if (inmessage["smallcontent"] === undefined) return;
     var innerHTML = inmessage["smallcontent"];
 

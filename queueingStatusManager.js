@@ -62,7 +62,7 @@ var DownloadQueueManager = function (callBack, errorHandler, destDir, vList, pre
     this.enqueue = function enqueue(videoIndex) {
         var urllink = this.videoList[videoIndex].videoURL;
         var filenamelocal = this.videoList[videoIndex].title + this.videoList[videoIndex].fileType;
-        chrome.downloads.download({ url: urllink, filename: filenamelocal, conflictAction: "uniquify" }, function (id) {
+        chrome.downloads.download({ url: urllink, filename: filenamelocal, saveAs: false, method:"GET", conflictAction: "uniquify" }, function (id) {
  	      });
     };
 };
