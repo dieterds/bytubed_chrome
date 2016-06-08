@@ -49,6 +49,9 @@
         <input id="showcount" type="checkbox">
         <label id="Label22">Show estimated number of videos URLs.</label>
         <br>
+        <input id="enableMiniControl" type="checkbox">
+        <label id="Label12">Enable floating MiniControl</label>
+        <br>
         <div hidden>
             <label id="Label15">Show</label>
             <input id="showResolution" type="checkbox">
@@ -74,12 +77,10 @@
         <br>
         <select class="secondaryLanguage" id="firstSubtitleLang" style="width: 200px">
             <option></option>
-        </select>
-        &gt;
+        </select> &gt;
         <select class="secondaryLanguage" id="secondSubtitleLang" style="width: 200px">
             <option></option>
-        </select>
-        &gt;
+        </select> &gt;
         <select class="secondaryLanguage" id="thirdSubtitleLang" style="width: 200px">
             <option></option>
         </select>
@@ -111,20 +112,20 @@
             <br>
             <br>
             <label>Generate an HTML file containing YouTube watch links for ...</label>
-            <br>
-            <input id="generateFailedLinks" type="checkbox">
-            <label>Failed requests</label>
-            <input id="generateWatchLinks" type="checkbox">
-            <label>Successful requests</label>
-            <br>
-            <hr>
-            <label>Generate text files containing YouTube watch links for ...
+        <br>
+        <input id="generateFailedLinks" type="checkbox">
+        <label>Failed requests</label>
+        <input id="generateWatchLinks" type="checkbox">
+        <label>Successful requests</label>
+        <br>
+        <hr>
+        <label>Generate text files containing YouTube watch links for ...
                 <br>
                 <input id="generateBadLinks" type="checkbox">
                 <label>Failed requests</label>
-                <input id="generateGoodLinks" type="checkbox">
-                <label>Successful requests</label>
-            </label>
+        <input id="generateGoodLinks" type="checkbox">
+        <label>Successful requests</label>
+        </label>
         </label>
 
     </fieldset>

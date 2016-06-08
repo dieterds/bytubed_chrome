@@ -5,18 +5,65 @@ var prefs = null;
 var RefreshTimer = null;
 GetAllSettings2();
 
+
+
+function SetSetting(key, value) {
+    if (prefs !== null) {
+        prefs[key] = value;
+        chrome.storage.sync.set(prefs, function () { console.log('successfully saved'); });
+    }
+    else
+        console.error('Error during saving!');
+}
+
+function GetSetting(key) {
+    if (prefs !== null)
+        return prefs[key];
+    else
+        return 0;
+}
+
+
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+    for (key in changes) {
+        var storageChange = changes[key];
+        console.log('Storage key "%s" in namespace "%s" changed. ' +
+            'Old value was "%s", new value is "%s".',
+            key,
+            namespace,
+            storageChange.oldValue,
+            storageChange.newValue);
+        prefs[key] = storageChange.newValue;
+    }
+});
+
+
 function GetAllSettings2(OnStart) {
     chrome.storage.sync.get(null, function (items) {
         prefs = items;
         console.log('successfully loaded');
-        bShowNumber = prefs['showcount'];
+
+        // if (RefreshTimer !== null) clearInterval(RefreshTimer);
+        // if (bShowNumber) {
+        //     OnGetVideoCount();
+        //     RefreshTimer = setInterval(function () { OnGetVideoCount(); }, 3000);
+        // }
+
+        // if (RefreshTimer !== null) clearInterval(RefreshTimer);
+        if (RefreshTimer === null) {
+            RefreshTimer = setInterval(function () { OnGetVideoCount(); }, 3000);
+        }
 
         chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-            if (RefreshTimer !== null) clearInterval(RefreshTimer);
-            if (bShowNumber) {
-                OnGetVideoCount();
-                RefreshTimer = setInterval(function () { OnGetVideoCount(); }, 3000);
-            }
+            // if (prefs['showcount']) {
+            OnGetVideoCount();
+
+
+            // }
+            // else {
+            //     chrome.browserAction.setBadgeBackgroundColor({ color: "#000000" });
+            //     chrome.browserAction.setBadgeText({ text: '' });
+            // }
         });
     });
 }
@@ -35,6 +82,7 @@ function OnGetVideoCount(event) {
                 TabID, { file: 'js/getcontentdocumentsmall.js', allFrames: false });
         }
     );
+
 }
 
 chrome.runtime.onMessage.addListener(function (inmessage, sender, sendResponse) {
@@ -48,14 +96,21 @@ chrome.runtime.onMessage.addListener(function (inmessage, sender, sendResponse) 
     var links = [];
     buildLinks(currentDocument, links);
 
-    var count = Math.floor(links.length);;
-    if (count > 0) {
-        chrome.browserAction.setBadgeBackgroundColor({ color: "#00FF00" });
+    if (prefs['showcount']) {
+        var count = Math.floor(links.length);;
+        if (count > 0) {
+            chrome.browserAction.setBadgeBackgroundColor({ color: "#00FF00", tabId: sender.tab.id });
+        }
+        else {
+            chrome.browserAction.setBadgeBackgroundColor({ color: "#FF0000", tabId: sender.tab.id });
+        }
+
+        chrome.browserAction.setBadgeText({ text: count.toString(), tabId: sender.tab.id });
     }
     else {
-        chrome.browserAction.setBadgeBackgroundColor({ color: "#FF0000" });
+        chrome.browserAction.setBadgeBackgroundColor({ color: "#000000", tabId: sender.tab.id });
+        chrome.browserAction.setBadgeText({ text: '', tabId: sender.tab.id });
     }
-    chrome.browserAction.setBadgeText({ text: count.toString(), tabId: sender.tab.id });
 });
 
 

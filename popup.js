@@ -10,8 +10,9 @@
 
 var LastClicked = null;
 var ContextMenuID = "";
-var prefs = null;
-GetAllSettings2(true); // OnStart = true
+// var prefs = null;
+var bgPage = chrome.extension.getBackgroundPage();
+// GetAllSettings2(true); // OnStart = true
 // chrome.storage.clear();
 // chrome.storage.sync.clear();
 
@@ -38,51 +39,60 @@ function getClipboard() {
     return result;
 }
 
-function GetAllSettings2(OnStart) {
-    chrome.storage.sync.get(null, function (items) {
-        prefs = items;
-        console.log('successfully loaded');
+// function GetAllSettings2(OnStart) {
+//     chrome.storage.sync.get(null, function (items) {
+//         prefs = items;
+//         console.log('successfully loaded');
 
-        $('#formatPreferenceNew').prop('selectedIndex', GetSetting('formatPreferenceNew'));
-        $('#qualityNew').prop('selectedIndex', GetSetting('qualityNew'));
-        $('#todo').prop('selectedIndex', GetSetting('todo'));
-        $('#destination').attr('value', GetSetting('destination'));
-        if (OnStart === true) {
-            // Erst starten wenn die Settings geladen wurden.
-            //OnBeginRequestMulti();
-            OnBeginGetDocumentMulti();
-        }
-    });
-}
+//         $('#formatPreferenceNew').prop('selectedIndex', GetSetting('formatPreferenceNew'));
+//         $('#qualityNew').prop('selectedIndex', GetSetting('qualityNew'));
+//         $('#todo').prop('selectedIndex', GetSetting('todo'));
+//         $('#destination').attr('value', GetSetting('destination'));
+//         if (OnStart === true) {
+//             // Erst starten wenn die Settings geladen wurden.
+//             //OnBeginRequestMulti();
+//             OnBeginGetDocumentMulti();
+//         }
+//     });
+// }
+
+
+// chrome.storage.onChanged.addListener(function (changes, namespace) {
+//     for (key in changes) {
+//         var storageChange = changes[key];
+//         console.log('Storage key "%s" in namespace "%s" changed. ' +
+//             'Old value was "%s", new value is "%s".',
+//             key,
+//             namespace,
+//             storageChange.oldValue,
+//             storageChange.newValue);
+//     }
+// });
 
 
 function SetSetting(key, value) {
-    if (prefs !== null) {
-        prefs[key] = value;
-        chrome.storage.sync.set(prefs, function () { console.log('successfully saved'); });
-    }
-    else
-        console.error('Error during saving!');
+    bgPage.SetSetting(key, value);
 }
 
 function GetSetting(key) {
-    if (prefs !== null)
-        return prefs[key];
-    else
-        return 0;
+    return bgPage.GetSetting(key);
 }
 
 $(document).ready(function () {
 
-    $('#formatPreferenceNew').change(function (event) { 
-        SetSetting(this.id, this.selectedIndex); });
-    $('#qualityNew').change(function (event) { 
-        SetSetting(this.id, this.selectedIndex); });
-    $('#todo').change(function (event) { 
-        SetSetting(this.id, this.selectedIndex); });
-    $('#destination').keydown(function (event) { 
-        SetSetting(this.id, this.value); });
-                  
+    $('#formatPreferenceNew').change(function (event) {
+        SetSetting(this.id, this.selectedIndex);
+    });
+    $('#qualityNew').change(function (event) {
+        SetSetting(this.id, this.selectedIndex);
+    });
+    $('#todo').change(function (event) {
+        SetSetting(this.id, this.selectedIndex);
+    });
+    $('#destination').keydown(function (event) {
+        SetSetting(this.id, this.value);
+    });
+
     // $('#loadsettings').click(function (event) {
     //     // console.log(GetSetting('formatPreferenceNew'));
     //     
@@ -99,28 +109,37 @@ $(document).ready(function () {
     // $('#testbutton').click(function (event) { OnBeginRequestMulti(event); });
     $('#testbutton').click(function(event) { OnBeginGetDocumentMulti(event); });
     $('#testgetvideocount').click(function(event) { OnTestGetVideoCount(event); });
-    $('#loadsettings').click(function (event) { GetAllSettings2(); });
+    // $('#loadsettings').click(function (event) { GetAllSettings2(); });
     $('#getcb').click(function (event) { getClipboard();});
     $('#setcb').click(function (event) { setClipboard($("#sandbox").val());});
     
     // $('#FilesTabButton').click(function (event) { OnTabClicked(event); });
     // $('#StatusTabButton').click(function (event) { OnTabClicked(event); });
-    $('#filter').keyup(function (event) { onFilterChange(event); });
+    $('#filter').keyup(function (event) {
+        $('#filtersmall').val(event.target.value);
+        onFilterChange(event);
+    });
     $('#filter').focus();
-    $('#selectAll').change(function (event) { onSelectAll(event); });
+    $('#selectAll').change(function (event) {
+        $('#selectAllsmall')[0].checked = event.target.checked;
+        onSelectAll(event);
+    });
     $('#start').click(function (event) { onStart(event); });
     $('#cancel').click(function (event) { onCancel(event); });
     $('#help').click(function (event) { onHelp(event); });
     $('#options').click(function (event) { chrome.runtime.openOptionsPage(); });
     
 
-    chrome.storage.onChanged.addListener(function (changed, areaName) {
-        if (areaName == 'sync') {
-            console.log('Settings changed');
-            prefs = GetAllSettings2();
-        }
-    });
-    
+    // Small
+    ActivateMiniControl();
+
+    // chrome.storage.onChanged.addListener(function (changed, areaName) {
+    //     if (areaName == 'sync') {
+    //         console.log('Settings changed');
+    //         prefs = GetAllSettings2();
+    //     }
+    // });
+
       // $('button').toggleClass('VerticalCenter', true);
       // $('img').toggleClass('VerticalCenter', true);
       // $('label').toggleClass('VerticalCenter', true);
@@ -139,6 +158,14 @@ $(document).ready(function () {
     // }
     //OnBeginRequestOne();
     //OnBeginRequestMulti();
+
+    $('#formatPreferenceNew').prop('selectedIndex', GetSetting('formatPreferenceNew'));
+    $('#qualityNew').prop('selectedIndex', GetSetting('qualityNew'));
+    $('#todo').prop('selectedIndex', GetSetting('todo'));
+    $('#destination').attr('value', GetSetting('destination'));
+    //OnBeginRequestMulti();
+    OnBeginGetDocumentMulti();
+
 });
 
 
@@ -147,15 +174,52 @@ function SetActive(tab) {
         $('#StatusTab').hide();
         $('#FilesTab').fadeIn();
         $('#FilesControlTab').fadeIn();
+        ShowMiniControl();
     }
     else if (tab == 2) {
 
         $('#FilesTab').hide();
         $('#FilesControlTab').hide();
+        HideMiniControl();
         $('#StatusTab').fadeIn();
     }
 }
 
+
+function MiniControlEnabled() {
+    return GetSetting('enableMiniControl') == true;
+}
+
+function ActivateMiniControl() {
+    if (MiniControlEnabled()) {
+        $('#filtersmall').focus();
+        $('#filtersmall').keyup(function (event) {
+            $('#filter').val(event.target.value);
+            onFilterChange(event);
+        });
+        $('#startsmall').click(function (event) {
+            $('#start').click();
+        });
+        $('#selectAllsmall').change(function (event) {
+            $('#selectAll')[0].checked = event.target.checked;
+            onSelectAll(event);
+        });
+        ShowMiniControl()
+    }
+    else {
+        HideMiniControl();
+    }
+}
+
+function ShowMiniControl() {
+    if (MiniControlEnabled()) {
+        $('#small').fadeIn();
+    }
+
+}
+function HideMiniControl() {
+    $('#small').hide();
+}
 
 // function OnTabClicked(event) {
 //     if (event.target.id == 'FilesTabButton') {
@@ -239,12 +303,14 @@ function applyFilter(filterText) {
 
     if (filterText === "") {
         $('#selectAll')[0].checked = false;
+        $('#selectAllsmall')[0].checked = false;
         selection.toggleClass('selected', false);
         OnSelect();
         return;
     }
     else {
         $('#selectAll')[0].checked = false;
+        $('#selectAllsmall')[0].checked = false;
         var pattern = new RegExp(filterText, "i");
         var i = 0;
         for (i = 0; i < videoList.length; i++) {
@@ -367,18 +433,18 @@ function onStart(event) {
 
     var i3 = document.getElementById("todo").selectedIndex;
     preferences.todo = i3;
-    preferences.showDLWindow = prefs["showDLWindow"];
-    preferences.closeQStatusWindow = prefs["closeQStatusWindow"];
-    preferences.preserveOrder = prefs["preserveOrder"];
-    preferences.generateFailedLinks = prefs["generateFailedLinks"];
-    preferences.generateWatchLinks = prefs["generateWatchLinks"];
-    preferences.generateBadLinks = prefs["generateBadLinks"];
-    preferences.generateGoodLinks = prefs["generateGoodLinks"];
-    preferences.ignoreFileType = prefs["ignoreFileType"];
-    preferences.fetchSubtitles = prefs["fetchSubtitles"];
-    preferences.tryOtherLanguages = prefs["tryOtherLanguages"]; // this is not needed.
-            
-//     preferences.tryOtherDialects = prefs["tryOtherDialects"];
+    preferences.showDLWindow = GetSetting("showDLWindow");
+    preferences.closeQStatusWindow = GetSetting("closeQStatusWindow");
+    preferences.preserveOrder = GetSetting("preserveOrder");
+    preferences.generateFailedLinks = GetSetting("generateFailedLinks");
+    preferences.generateWatchLinks = GetSetting("generateWatchLinks");
+    preferences.generateBadLinks = GetSetting("generateBadLinks");
+    preferences.generateGoodLinks = GetSetting("generateGoodLinks");
+    preferences.ignoreFileType = GetSetting("ignoreFileType");
+    preferences.fetchSubtitles = GetSetting("fetchSubtitles");
+    preferences.tryOtherLanguages = GetSetting("tryOtherLanguages"); // this is not needed.
+
+    //     preferences.tryOtherDialects = GetSetting("tryOtherDialects");
 //     preferences.destinationDirectory = destinationDirectory; // Used in processing subtitles
 //     preferences.subtitleDest = document.getElementById("subtitleDest").value;
 // 
@@ -487,7 +553,7 @@ function OnBeginGetDocumentOne() {
 };
 
 function OnBeginGetDocumentMulti() {
-     var scanAllTabs = prefs["scanAllTabs"] ? prefs["scanAllTabs"] : false;    
+    var scanAllTabs = GetSetting("scanAllTabs") ? GetSetting("scanAllTabs") : false;
     LocalActiveTabs = 0;
     LocalActiveTabsHTML = {};
     LocalTabIDs = [];
@@ -575,8 +641,8 @@ chrome.runtime.onMessage.addListener(function(inmessage, sender, sendResponse) {
 // Mit Ajax Request Start //
 ////////////////////////////
 // function OnBeginRequestMulti() {
-//     var scanAllTabs = prefs["scanAllTabs"] ? prefs["scanAllTabs"] : false;
-//     var scanCB = prefs["scanClipboard"] ? prefs["scanClipboard"] : false;
+//     var scanAllTabs = GetSetting("scanAllTabs") ? GetSetting("scanAllTabs") : false;
+//     var scanCB = GetSetting("scanClipboard") ? GetSetting("scanClipboard") : false;
 //     var LocalTabURLs = [];    
     
 //     // Tabs
@@ -642,7 +708,7 @@ chrome.runtime.onMessage.addListener(function(inmessage, sender, sendResponse) {
 // }
 
 function TakeLinks(links, currentDocument) {
-    var scanCB = prefs["scanClipboard"] ? prefs["scanClipboard"] : false;
+    var scanCB = GetSetting("scanClipboard") ? GetSetting("scanClipboard") : false;
 
     if (scanCB) {
         getLinksFromClipboard(links);
@@ -894,7 +960,7 @@ function buildVideoList(links) {
     
     var vidCount = 0;
     //var treeChildren = document.getElementById("treeChildren");
-    var prefetchingEnabled = prefs["prefetch"];
+    var prefetchingEnabled = GetSetting("prefetch");
 
     var ti = document.getElementById("links");
     while (ti.children.length > 1) {

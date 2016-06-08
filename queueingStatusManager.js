@@ -3,6 +3,7 @@
 // window.onunload = queueingStatusManager.onUnload;
 
 var AsHTMLFile = true;
+var bgPage = chrome.extension.getBackgroundPage();
 
 var DownloadQueueManager = function (callBack, errorHandler, destDir, vList, prefs, subtitleLanguageInfo) {
     //this.caller                    = caller;
@@ -484,7 +485,7 @@ var queueingStatusManager = {
         "\n </html>";
 
         if (AsHTMLFile) {
-            var bgPage = chrome.extension.getBackgroundPage();
+            //bgPage.data = htmlString;
             
             chrome.tabs.create({ active: false, url: chrome.extension.getURL('output.html?data=' + bgPage.data.length) }, function(newtab) {
                 bgPage.data[bgPage.data.length] = htmlString;
