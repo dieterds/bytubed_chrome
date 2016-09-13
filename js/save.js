@@ -99,10 +99,10 @@ chrome.runtime.onMessage.addListener(function (inmessage, sender, sendResponse) 
     if (prefs['showcount']) {
         var count = Math.floor(links.length);;
         if (count > 0) {
-            chrome.browserAction.setBadgeBackgroundColor({ color: "#00FF00", tabId: sender.tab.id });
+            chrome.browserAction.setBadgeBackgroundColor({ color: "#00AA00", tabId: sender.tab.id });
         }
         else {
-            chrome.browserAction.setBadgeBackgroundColor({ color: "#FF0000", tabId: sender.tab.id });
+            chrome.browserAction.setBadgeBackgroundColor({ color: "#CC0000", tabId: sender.tab.id });
         }
 
         chrome.browserAction.setBadgeText({ text: count.toString(), tabId: sender.tab.id });
