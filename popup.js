@@ -496,8 +496,7 @@ function onStart(event) {
         }
     }
     else {
-        alert(strings.getString("Selection") +
-            strings.getString("NothingSelected"));
+        alert(strings.getString("NothingSelected"));
     }
 }
 
