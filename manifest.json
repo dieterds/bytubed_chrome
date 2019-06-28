@@ -1,7 +1,6 @@
 {
   "name": "BYTubeD Express",
-  "version": "1.0.2",
-//   "version_name": "beta1",
+  "version": "1.0.3",
   "homepage_url": "https://github.com/dieterds/bytubed_chrome",
   "short_name": "BYTubeDExp",
   "description": "Gets all Youtube links and generates downloadable videolinks in different resolutions.",
@@ -9,7 +8,7 @@
     "default_icon": "gfx/icon.png",
     "default_popup": "popup.html"
   },
-    "background": {
+  "background": {
     "page": "save.html"
   },
   "icons": {

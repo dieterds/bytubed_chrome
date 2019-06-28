@@ -563,7 +563,7 @@ function OnBeginGetDocumentMulti() {
             for (var index = 0; index < activeTabs.length; index++) {
                 var tab = activeTabs[index];
                 // Chrome URLs überspringen
-                if (tab.url.indexOf("chrome") === 0) { console.warn(tab.url + ' skipped!'); continue }
+                if (tab.url.indexOf("chrome") === 0) { console.log(tab.url + ' skipped!'); continue }
                 //console.log(tab.url);
 
                 
@@ -2255,7 +2255,8 @@ function VideoListManager(callerObject, callBack, errorHandler, videoList, prefe
                         if(key && urlParams[key])
                         {
                             var val = urlParams[key];
-                            vUrl += "&" + (key == "sig"? "signature":key) + "=" + val;
+                    // vUrl += "&" + (key == "sig" ? "signature" : key) + "=" + val;
+                    vUrl += "&" + key + "=" + val;
                         }
                     }
                     
